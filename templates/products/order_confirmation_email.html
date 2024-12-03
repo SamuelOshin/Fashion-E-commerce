@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333333;
+        }
+        p {
+            color: #666666;
+            line-height: 1.5;
+        }
+        ul {
+            padding: 0;
+            list-style-type: none;
+        }
+        ul li {
+            background-color: #f9f9f9;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .total {
+            font-weight: bold;
+            color: #333333;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #999999;
+            font-size: 12px;
+        }
+        .checkout__order {
+            border: 1px solid #e1e1e1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .order__title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .checkout__order__products {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .checkout__total__products li,
+        .checkout__total__all li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        .checkout__total__all li {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thank you for your order!</h1>
+        <p>Hi {{ order.first_name }},</p>
+        <p>Thank you for your order. Your order number is {{ order.id }}.</p>
+        <p>We have received your order and will process it shortly. Here are the details of your order:</p>
+        <div class="checkout__order">
+            <h4 class="order__title">Your order</h4>
+            <div class="checkout__order__products">Product <span>Total</span></div>
+            <ul class="checkout__total__products">
+                {% for item in order.items.all %}
+                <li>{{ forloop.counter }}. {{ item.product.name }} <span>${{ item.price|floatformat:2 }}</span></li>
+                {% endfor %}
+            </ul>
+            <ul class="checkout__total__all">
+                <li>Subtotal <span>${{ order.items.aggregate(total=models.Sum('price'))['total'] }}</span></li>
+                <li>Total <span>${{ order.items.aggregate(total=models.Sum('price'))['total'] }}</span></li>
+            </ul>
+        </div>
+        <p>Thank you for shopping with us!</p>
+        <div class="footer">
+            <p>&copy; {{ current_year }} Your Company. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

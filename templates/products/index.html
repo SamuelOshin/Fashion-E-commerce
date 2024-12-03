@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="home-bg section" id="home">
+    <div class="bg-overlay"></div>
+        <div class="container z-index">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="text-white text-center">
+                        <h4>Hello & Welcome! </h4>
+                        <h1 class="header_title mb-0 mt-3">This is <span class="element fw-bold" data-elements="KNEGRA...,NYVES,KNEGRA NYVES"></span></h1>
+                        <ul class="social_home list-unstyled text-center pt-4">
+                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-facebook"></i></a></li>
+                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-linkedin"></i></a></li>
+                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-dribbble"></i></a></li>
+                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-google-plus"></i></a></li>
+                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-twitter"></i></a></li>
+                        </ul>
+                        <div class="header_btn">
+                            <a href="{% url 'shop' %}" class="btn btn-outline-custom btn-rounded mt-4">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="scroll_down">
+        <a href="#about" class="scroll">
+            <i class="mbri-arrow-down text-white"></i>
+        </a>
+    </div>
+</section>
+<!-- Product -->
+<section class="product spad mt-5 p-2">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">Best Sellers</li>
+                    <li data-filter=".new-arrivals">New Arrivals</li>
+                    <li data-filter=".hot-sales">Hot Sales</li>
+                </ul>
+            </div>
+        </div>
+        {% for product in products %}
+        <div class="row product__filter">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                <div class="product__item" data-url="{% url 'product_detail' product.slug %}">
+                    <div class="product__item__pic set-bg" data-setbg="{{ product.product_picture.url }}">
+                        <span class="label">New</span>
+                        <ul class="product__hover">
+                            <li><a href="#"><img class="icon_2em" src="{% static 'img/icon/heart.png' %}" alt=""></a></li>
+                            <li><a href="#"><img class="icon_2em" src="{% static 'img/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                            <li><a href="#"><img class="icon_2em" src="{% static 'img/icon/search.png' %}" alt=""></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6>{{ product.name }}</h6>
+                        <a href="{% url 'add_to_cart' product.slug %}" class="add-cart">+ Add To Cart</a>
+                        <div class="rating">
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                        <h5>${{ product.price }}</h5>
+                        <div class="product__color__select">
+                            <label for="pc-1">
+                                <input type="radio" id="pc-1">
+                            </label>
+                            <label class="active black" for="pc-2">
+                                <input type="radio" id="pc-2">
+                            </label>
+                            <label class="grey" for="pc-3">
+                                <input type="radio" id="pc-3">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

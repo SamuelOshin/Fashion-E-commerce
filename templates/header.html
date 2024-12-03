@@ -1,0 +1,108 @@
+{% load static %}
+{% load nav_active %}
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__option">
+        <div class="offcanvas__links">
+            <a href="#">Sign in</a>
+            <a href="#">FAQs</a>
+        </div>
+        <div class="offcanvas__top__hover">
+            <span>Usd <i class="arrow_carrot-down"></i></span>
+            <ul>
+                <li>USD</li>
+                <li>EUR</li>
+                <li>USD</li>
+            </ul>
+        </div>
+    </div>
+    <div class="offcanvas__nav__option">
+        <a href="#" class="search-switch icon_1em"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+        <a href="#"><img class="icon_1em" src="{% static 'img/icon/heart.png' %}" alt=""></a>
+        <a data-cart-url="{% url 'cart_detail' %}">
+            <img class="icon_1em" src="{% static 'img/icon/cart.png' %}" alt="cart">
+            <span id="cart-count" class="cart-count">{{ cart_items|length }}</span>
+        </a>
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas__text">
+        <p>Free shipping, 30-day return or refund guarantee.</p>
+    </div>
+</div>
+<!-- Offcanvas Menu End -->
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                        <p>Free shipping, 30-day return or refund guarantee.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-5">
+                    <div class="header__top__right">
+                        <div class="header__top__links">
+                            <a href="#">Sign in</a>
+                            <a href="#">FAQs</a>
+                        </div>
+                        <div class="header__top__hover">
+                            <span>Usd <i class="arrow_carrot-down"></i></span>
+                            <ul>
+                                <li>USD</li>
+                                <li>EUR</li>
+                                <li>USD</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <!-- <a href="./index.html"><img src="img/logo.png" alt=""></a> -->
+                    <a href="./index.html"><h3 class="fw-bolder" style="color: #300E02;">KNEGRA NYVES</h3></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li class="{% active request '^/$' %}"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="{% active request '^/products/shop/' %}"><a href="{% url 'shop' %}">Shop</a></li>
+                        <li class="{% active request '^/blog/' %}"><a href="#">Blog</a></li>
+                        <li class="{% active request '^/contacts/' %}"><a href="#">Contacts</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="header__nav__option">
+                    <a href="#" class="search-switch icon_1em"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+                    <a href="#"><img class="icon_1em" src="{% static 'img/icon/heart.png' %}" alt="heart"></a>
+                    <a href="{% url 'cart_detail' %}" id="cart-icon" data-cart-url="{% url 'cart_detail' %}">
+                        <img class="icon_1em" src="{% static 'img/icon/cart.png' %}" alt="cart">
+                        <span id="cart-count" class="cart-count">{{ cart_items|length }}</span>
+                    </a>
+                </div>
+                <div id="cart_sidebar" class="cart_sidebar">
+                    <div class="cart_sidebar_header">
+                        <p class="fw-bold">Cart</p>
+                        <a href="javascript:void(0)" class="closebtn" id="close-cart-sidebar">&times;</a>
+                    </div>
+                    {% include 'products/sub_cart.html' %}
+                </div>
+                <!-- Overlay -->
+                <div id="overlay" class="overlay"></div>
+            </div>
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>
+<!-- Header Section End -->

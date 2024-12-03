@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="breadcrumb__links">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'shop' %}">Shop</a>
+            <span>Cart</span>
+        </div>
+    </div>
+</section>
+
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr data-product-price="{{ item.product.price }}" data-product-slug="{{ item.product.slug }}">
+                                <td class="product__cart__item">
+                                    <div class="product__cart__item__pic">
+                                        <img src="{{ item.product.product_picture.url }}" alt="{{ item.product.name }}">
+                                    </div>
+                                    <div class="product__cart__item__text">
+                                        <h6>{{ item.product.name }}</h6>
+                                        <h5>${{ item.product.price }}</h5>
+                                    </div>
+                                </td>
+                                <td class="quantity__item">
+                                    <div class="quantity">
+                                        <div class="pro-qty-2">
+                                            <button type="button" class="qty-btn qty-btn-minus">-</button>
+                                            <input type="text" value="{{ item.quantity }}" class="quantity-input" data-product-slug="{{ item.product.slug }}">
+                                            <button type="button" class="qty-btn qty-btn-plus">+</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cart__price total-price-{{ item.product.slug }}" >${{ item.total_price|floatformat:2 }}</td>
+                                <td class="cart__close">
+                                    <a href="{% url 'remove_from_cart' item.product.slug %}"><i class="fa fa-close"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="{% url 'shop' %}">Continue Shopping</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn update__btn">
+                            <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Subtotal <span class="subtotal">${{ total_price|floatformat:2 }}</span></li>
+                        <li>Total <span class="subtotal">${{ total_price|floatformat:2 }}</span></li>
+                    </ul>
+                    <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
