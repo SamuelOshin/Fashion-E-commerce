@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="breadcrumb__links">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'shop' %}">Shop</a>
+            <a href="{% url 'order_list' %}">Orders</a>
+            <span>Order #{{ order.id }}</span>
+        </div>
+    </div>
+</section>
+
+<section class="order-detail spad">
+    <div class="container">
+        <div class="p-4 shadow-sm">
+            <h4 class="mb-3 fw-bold">Order ID: <strong>{{ order.id }}</strong></h4>
+            <p class="text-muted fw-bold">Order date: {{ order.created_at|date:"F j, Y, g:i a" }}</p>
+            <p class="text-success">Estimated delivery: {{ order.estimated_delivery|date:"F j, Y" }}</p>
+            <p class="text-muted fw-bold mb-0">Payment Status: 
+                {% if order.payment_status == 'Paid' %}
+                <span class="badge bg-success">Successful</span>
+                {% elif order.payment_status == 'Pending' %}
+                <span class="badge bg-warning text-dark">Pending</span>
+                {% else %}
+                <span class="badge bg-danger">Failed</span>
+                {% endif %}
+            </p>
+            <hr>
+            <div class="mb-4">
+                {% for item in order_items %}
+                <div class="d-flex justify-content-between align-items-center mb-3 order_p">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ item.product.product_picture.url }}" alt="{{ item.product.name }}" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 15px;">
+                        <div>
+                            <p class="mb-1 fw-bold">{{ item.product.name }}</p>
+                            <p class="text-muted mb-0 d-flex">Color: <span style="background-color: {{ item.color }}; width: 20px; height: 20px; display: inline-block; margin-left: 5px; border-radius: 50%;"></span></p>
+                            <p class="text-muted mb-0">Size: {{ item.size }}</p>
+                            <p class="text-muted mb-0 fs-7">Qty: {{ item.quantity }}</p>
+                        </div>
+                    </div>
+                    <div class="order_p">
+                        <p class="mb-0 fw-bold text-end">${{ item.price|floatformat:2 }}</p>
+                        <p class="text-muted mb-0 fs-7">Total: ${{ item.total_price|floatformat:2 }}</p>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+            <div class="d-flex justify-content-between">
+                <div class="col-md-6">
+                    <h6>Delivery</h6>
+                    <p class="text-muted mb-0">{{ order.address }}</p>
+                    <p class="text-muted mb-0">{{ order.city }}, {{ order.state }}</p>
+                    <p class="text-muted mb-0">{{ order.zip_code }}</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <h6>Total</h6>
+                    <p class="text-muted mb-0"><strong>${{ total_price|floatformat:2 }}</strong></p>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+                <button class="btn btn-outline-primary me-2">Invoice</button>
+                <button class="btn btn-primary">Track order</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

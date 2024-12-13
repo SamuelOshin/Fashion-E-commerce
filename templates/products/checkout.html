@@ -14,8 +14,19 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-6">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="notification alert alert-dismissible fade show {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% endif %}" style="transform: translateY(-20px);">
+                            <div class="notification-content">
+                                <div class="notification-title">{{message.tags}}</div>
+                                <div class="notification-description">{{message}}</div>
+                                <div class="close-button" data-bs-dismiss="alert">X</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <h4>Billing Details</h4>
-                <form  method="post">
+                <form method="post" action="{% url 'checkout' %}">
                     {% csrf_token %}
                     <div class="checkout__input{% if form.first_name.errors %} has-danger{% endif %}">
                         <p>First Name<span>*</span></p>
@@ -86,13 +97,23 @@
                     <div class="checkout__input__checkbox">
                         <label for="order_notes">
                             Note about your order, e.g., special note for delivery
-                            <input type="checkbox" id="id_note">
+                            <input type="checkbox" id="order_notes">
                             <span class="checkmark"></span>
                         </label>
                     </div>
-                    <div class="checkout__input">
-                        <p>Order notes<span>*</span></p>
-                        <input type="text" name="note" placeholder="Notes about your order, e.g. special notes for delivery." id="id_note">
+                    <div class="checkout__input{% if form.note.errors %} has-danger{% endif %}">
+                        <p>Order Notes</p>
+                        {{ form.note }}
+                        {% for error in form.note.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="checkout__input{% if form.payment_method.errors %} has-danger{% endif %}">
+                        <p>Payment<span>*</span></p>
+                        {{ form.payment_method }}
+                        {% for error in form.payment_method.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
                     </div>
                     <button type="submit" class="site-btn">PLACE ORDER</button>
                 </form>

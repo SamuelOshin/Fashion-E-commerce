@@ -3,39 +3,37 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from datetime import datetime
 from django.contrib.auth.models import User
+from multiselectfield import MultiSelectField
 
+SIZE_CHOICES = [
+    ('S', 'Small'),
+    ('M', 'Medium'),
+    ('L', 'Large'),
+    ('XL', 'Extra Large'),
+]
+
+COLOR_CHOICES = [
+    ('#000000', 'Black'),
+    ('#FFFFFF', 'White'),
+    ('#FF0000', 'Red'),
+    ('#00FF00', 'Green'),
+    ('#0000FF', 'Blue'),
+]
+
+GENDER_CHOICES = [
+    ('M', 'Male'),
+    ('F', 'Female'),
+    ('U', 'Unisex'),
+]
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.name
 
-    class Meta:
-        verbose_name = "Category"
-        verbose_name_plural = "Categories"
-
-
 class Product(models.Model):
-    SIZE_CHOICES = [
-        ('XS', 'XS'),
-        ('S', 'S'),
-        ('M', 'M'),
-        ('L', 'L'),
-        ('XL', 'XL'),
-        ('XXL', 'XXL'),
-    ]
-
-    COLOR_CHOICES = [
-        ('#0b090c', 'Black'),
-        ('#20315f', 'Blue'),
-        ('#f1af4d', 'Yellow'),
-        ('#ed1c24', 'Red'),
-        ('#ffffff', 'White'),
-    ]
-
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -48,12 +46,10 @@ class Product(models.Model):
     tags = models.CharField(max_length=255, blank=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     dimensions = models.CharField(max_length=255, blank=True)
-    size = models.CharField(max_length=50, choices=SIZE_CHOICES, blank=True)
-    color = models.CharField(max_length=7, choices=COLOR_CHOICES, blank=True)
+    size = MultiSelectField(choices=SIZE_CHOICES, blank=True)
+    color = MultiSelectField(choices=COLOR_CHOICES, blank=True)
     material = models.CharField(max_length=255, blank=True)
-    gender = models.CharField(
-        max_length=50, choices=[('M', 'Male'), ('F', 'Female'), ('U', 'Unisex')], blank=True
-    )
+    gender = MultiSelectField(choices=GENDER_CHOICES, blank=True)
     promo_badge = models.BooleanField(default=False)
     promo_badge_text = models.CharField(max_length=50, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -63,10 +59,6 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
-    class Meta:
-        verbose_name = "Product"
-        verbose_name_plural = "Products"
 
 class GalleryMedia(models.Model):
     MEDIA_TYPE_CHOICES = [
@@ -118,6 +110,8 @@ class CartItem(models.Model):
         return self.quantity * self.product.price
 
 class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
+    session_key = models.CharField(max_length=40, null=True, blank=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
@@ -125,8 +119,10 @@ class Order(models.Model):
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     zip_code = models.CharField(max_length=10)
-    note = models.TextField()
+    note = models.TextField(blank=True, null=True)
     payment_method = models.CharField(max_length=20)
+    payment_status = models.CharField(max_length=20, default='Pending')
+    transaction_reference = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -137,6 +133,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    color = models.CharField(max_length=7, blank=True)  # Store color as hex code
+    size = models.CharField(max_length=2, blank=True)  # Store size as a string
 
     def __str__(self):
         return f'OrderItem {self.id}'

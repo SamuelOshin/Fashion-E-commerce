@@ -6,12 +6,11 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="breadcrumb__text">
-                    <h4>Product Details</h4>
+                <div class="container">
                     <div class="breadcrumb__links">
                         <a href="{% url 'index' %}">Home</a>
-                        <a href="">Shop</a>
-                        <span>Product Details</span>
+                        <a href="{% url 'shop' %}">Shop</a>
+                        <span>{{ product.name }}</span>
                     </div>
                 </div>
             </div>
@@ -164,18 +163,19 @@
                             <div class="product__details__option">
                                 <div class="product__details__option__size">
                                     <span>Size:</span>
-                                    {% for size in product.SIZE_CHOICES %}
-                                        <label for="{{ size.0|lower }}">{{ size.0|lower }}
-                                            <input type="radio" id="{{ size.0|lower }}" name="size" value="{{ size.0 }}">
-                                        </label>
+                                    {% for size in sizes %}
+                                    <label>
+                                        <input type="radio" name="size" value="{{ size }}">
+                                        {{ size }}
+                                    </label>
                                     {% endfor %}
                                 </div>
                                 <div class="product__details__option__color">
                                     <span>Color:</span>
                                     {% for color in colors %}
-                                        <label class="c-{{ forloop.counter }}" for="sp-{{ forloop.counter }}">
-                                            <input type="radio" id="sp-{{ forloop.counter }}" name="color" value="{{ color }}">
-                                        </label>
+                                    <label style="background-color: {{ color }};">
+                                        <input type="radio" name="color" value="{{ color }}">
+                                    </label>
                                     {% endfor %}
                                 </div>
                             </div>

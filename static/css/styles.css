@@ -5,6 +5,48 @@ body {
   transition: margin-right .5s;
   background-color: var(--body-bg);
   color: var(--body-color);
+  padding-top: 137px; /* Adjust this value based on your header height */
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  body {
+    padding-top: 90px; /* Adjust this value based on your header height */
+  }
+
+  .header_title {
+    font-size: 50px;
+  }
+
+  .header_subtitle {
+    font-size: 16px;
+  }
+
+  .custom-nav .navbar-nav li a {
+    font-size: 14px;
+  }
+
+  .cart_sidebar {
+    width: 300px;
+  }
+
+  .cart-product img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .qty-btn {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+  }
+
+  .quantity-input {
+    width: 40px;
+    height: 25px;
+  }
+
+  .header__logo a h3{
+    font-size: 19px;
+  }
 }
 
 :root {
@@ -963,7 +1005,7 @@ button:focus {
   transform: translateY(200px);
   transition: transform .4s;
   pointer-events: all;
-  z-index: 1046
+  z-index: 1046;
 }
 
 .notification .button {
@@ -972,24 +1014,24 @@ button:focus {
   text-transform: none;
   padding: 6px 8px;
   margin-top: 7px;
-  background-color: 0d6efd;
-  opacity: .95
+  background-color: #0d6efd;
+  opacity: .95;
 }
 
 .notification .button:hover {
-  opacity: 1
+  opacity: 1;
 }
 
 .notification.no-description .notification-description {
-  display: none
+  display: none;
 }
 
 .notification.no-description {
-  font-size: 13px
+  font-size: 13px;
 }
 
 .notification.info {
-  color: 0d6efd
+  color: #0d6efd;
 }
 
 .notification.success {
@@ -998,35 +1040,36 @@ button:focus {
 }
 
 .notification.success .button {
-  background-color: #20c997
+  background-color: #20c997;
 }
 
 .notification.warning {
-  color: f7e296;
-  border-left-color: f7e296;
+  color: #f7e296;
+  border-left-color: #f7e296;
 }
 
 .notification.warning .button {
-  background-color: f7e296;
-  text-shadow: 1px 1px 3px rgba(0,0,0,.1)
+  background-color: #f7e296;
+  text-shadow: 1px 1px 3px rgba(0,0,0,.1);
 }
 
 .notification.error {
-  color: ff0051;
-  border-left-color: ff0051;
+  color: #ff0051;
+  border-left-color: #ff0051;
 }
 
 .notification.error .button {
-  background-color: ff0051
+  background-color: #ff0051;
 }
 
 .notification .notification-title {
-  font-weight: bold
+  font-weight: bold;
+  text-transform: capitalize;
 }
 
 .notification .notification-description {
   font-size: 13px;
-  color: var(--gray)
+  color: var(--gray);
 }
 
 .notification .close-button {
@@ -1040,18 +1083,17 @@ button:focus {
   color: var(--darkgray);
   font-size: 17px;
   opacity: .7;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .notification .close-button:hover {
-  opacity: 1
+  opacity: 1;
 }
 
 @media (min-width: 576px) {
   .notification {
       left:auto;
-      margin: 0 50px 6px 0;
-      white-space: nowrap
+      white-space: nowrap;
   }
 }
 
@@ -1060,4 +1102,73 @@ button:focus {
   color: var(--white);
   padding: var(--btn-padding);
   border-radius: var(--btn-border-radius);
+}
+
+div.checkout__input div.nice-select {
+  height: 50px;
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  font-size: 14px;
+  color: #636262;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: white;
+  transition: box-shadow 0.3s ease;
+}
+
+.header.scrolled {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.order_p p{
+  font-size: 0.9em;
+}
+.fs-7{
+  font-size: 0.7rem !important;
+}
+
+.bi{
+  width: 1em;
+  height: 1em;
+  vertical-align: -.125em;
+  fill: currentcolor;
+}
+
+.form-control:focus {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  border-color: #9aacf3;
+  outline: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05), 0 0 0 0.1rem rgba(52, 89, 230, .25);
+}
+input:focus, select:focus, button:focus, textarea:focus {
+  outline: none;
+}
+
+.formstyle{
+  border: 1px solid #e1e1e1;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.form-floating label{
+  font-size: 15px;
+  color: #636262;
+  font-weight: 700;
+}
+
+a.dropdown-item {
+  color: #575759!important;
+}
+.dropdown-item:hover {
+  color: #ffffff!important;
+  background-color: #b48865;
 }

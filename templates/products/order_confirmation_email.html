@@ -87,8 +87,8 @@
                 {% endfor %}
             </ul>
             <ul class="checkout__total__all">
-                <li>Subtotal <span>${{ order.items.aggregate(total=models.Sum('price'))['total'] }}</span></li>
-                <li>Total <span>${{ order.items.aggregate(total=models.Sum('price'))['total'] }}</span></li>
+                <li>Subtotal <span>${{ total_price|floatformat:2 }}</span></li>
+                <li>Total <span>${{ total_price|floatformat:2 }}</span></li>
             </ul>
         </div>
         <p>Thank you for shopping with us!</p>

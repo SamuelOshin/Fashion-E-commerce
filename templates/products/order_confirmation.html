@@ -19,6 +19,14 @@
                 <p>We have sent a confirmation email to {{ order.email }}.</p>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="">
+                    <a href="{% url 'index' %}">Back to Homepage</a>
+                    <a href="{% url 'order_list'   %}">View Order Details</a>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}

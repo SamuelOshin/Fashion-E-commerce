@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<section class="home-bg section" id="home">
+<section class="home-bg section h-100vh" id="home">
     <div class="bg-overlay"></div>
         <div class="container z-index">
             <div class="row justify-content-center">
@@ -42,8 +42,8 @@
                 </ul>
             </div>
         </div>
-        {% for product in products %}
         <div class="row product__filter">
+            {% for product in products %}
             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                 <div class="product__item" data-url="{% url 'product_detail' product.slug %}">
                     <div class="product__item__pic set-bg" data-setbg="{{ product.product_picture.url }}">
@@ -79,8 +79,8 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </section>
 {% endblock %}

@@ -1,4 +1,8 @@
 {% load static %}
+<div class="cart_sidebar_header">
+    <p class="fw-bold">Cart</p>
+    <a href="javascript:void(0)" class="closebtn" id="close-cart-sidebar">&times;</a>
+</div>
 {% if cart_items %}
 <div class="cart-summary-body">
     {% for item in cart_items %}
