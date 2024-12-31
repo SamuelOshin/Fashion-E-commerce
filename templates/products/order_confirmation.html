@@ -28,5 +28,17 @@
             </div>
         </div>
     </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="notification alert alert-dismissible fade show {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% endif %}" style="transform: translateY(-20px);">
+                <div class="notification-content">
+                    <div class="notification-title">{{message.tags}}</div>
+                    <div class="notification-description">{{message}}</div>
+                    <div class="close-button" data-bs-dismiss="alert">X</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
 </section>
 {% endblock %}

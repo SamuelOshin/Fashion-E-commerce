@@ -1172,3 +1172,22 @@ a.dropdown-item {
   color: #ffffff!important;
   background-color: #b48865;
 }
+
+span.product-color {
+  border-radius: 50%;
+  width: 20px;
+  display: block;
+  height: 20px;
+}
+
+.productSC{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+span.product-size {
+  border: 1px solid #e1e1e1;
+  padding: 5px;
+  border-radius: 1px;
+}

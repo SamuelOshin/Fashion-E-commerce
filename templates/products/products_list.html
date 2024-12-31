@@ -1,0 +1,41 @@
+
+{% load static %}
+<!-- products_list.html -->
+<div class="row product__filter">
+    {% for product in products %}
+    <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6">
+        <div class="product__item" data-url="{% url 'product_detail' product.slug %}">
+            <div class="product__item__pic set-bg" data-setbg="{{ product.product_picture.url }}">
+                <span class="label">New</span>
+                <ul class="product__hover">
+                    <li><a href="#"><img class="icon_2em" src="{% static 'img/icon/heart.png' %}" alt=""></a></li>
+                    <li><a href="#"><img class="icon_2em" src="{% static 'img/icon/compare.png' %}" alt=""> <span>Compare</span></a></li>
+                    <li><a href="#"><img class="icon_2em" src="{% static 'img/icon/search.png' %}" alt=""></a></li>
+                </ul>
+            </div>
+            <div class="product__item__text">
+                <h6>{{ product.name }}</h6>
+                <a href="#" class="add-cart" data-url="{% url 'add_to_cart' product.slug %}">+ Add To Cart</a>
+                <div class="rating">
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <h5>${{ product.price }}</h5>
+                <div class="product__color__select">
+                    {% for color in product.available_colors_list %}
+                        <label for="color{{ product.id }}{{ forloop.counter }}">
+                            <input type="radio" name="color_{{ product.id }}" id="color{{ product.id }}{{ forloop.counter }}" value="{{ color }}">
+                            <span style="background-color: {{ color }};"></span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No products found.</p>
+    {% endfor %}
+</div>

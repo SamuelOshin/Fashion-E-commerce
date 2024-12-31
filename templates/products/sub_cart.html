@@ -8,19 +8,33 @@
     {% for item in cart_items %}
     <div class="cart-product">
         <div class="cart-product-col">
-            <img src="{{ item.product.product_picture.url }}" alt="{{ item.product.name }}">
+            <img src="{{ item.product.product_picture.url }}" alt="{{ item.product.name }}" width="50">
             <div class="cart-product-control">
                 <div class="cart-row">
-                    <div class="cart-product-name">{{ item.product.name }}</div>
-                    <div class="cart-product-total total-price-{{ item.product.slug }}">${{ item.total_price|floatformat:2 }}</div>
+                    <div class="cart-product-name">{{ item.product.name }}
+                        <div class="productSC">
+                            <span class="product-color" style="background-color: {{ item.color }};"></span>
+                            <span class="product-size">{{item.size}}</span>
+                        </div> 
+                        
+                    </div>
+                    <div class="cart-product-total total-price-{{ item.product.slug }}">${{ item.total_price }}</div>
                 </div>
                 <div class="cart-product-quantity">
                     <div class="pro-qty">
                         <button type="button" class="qty-btn qty-btn-minus">-</button>
-                        <input type="text" value="{{ item.quantity }}" class="quantity-input" data-product-slug="{{ item.product.slug }}">
+                        <input type="text" 
+                            value="{{ item.quantity }}" 
+                            class="quantity-input"
+                            data-product-slug="{{ item.product.slug }}"
+                            data-size="{{ item.size }}"
+                            data-color="{{ item.color }}"
+                        >
                         <button type="button" class="qty-btn qty-btn-plus">+</button>
                     </div>
-                    <div class="cart-product-remove"><a href="{% url 'remove_from_cart' item.product.slug %}">Remove</a></div>
+                    <div class="cart-product-remove">
+                        <a href="#" class="remove-item" data-product-slug="{{ item.product.slug }}" data-size="{{ item.size }}" data-color="{{ item.color }}">Remove</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,20 +45,16 @@
         <div class="cart-subtotal">
             <div class="cart-row">
                 <span>Subtotal</span>
-                <span class="subtotal">${{ total_price|floatformat:2 }}</span>
+                <span class="subtotal">${{ total_price }}</span>
             </div>
         </div>
-        <div class="cart-subtotal">
-            <div class="cart-row">
-                <span>Total</span>
-                <span class="total">${{ total_price|floatformat:2 }}</span>
-            </div>
+        <div class="cart-shipping-taxes">
+            Shipping and taxes are calculated during checkout.
         </div>
-        <div class="cart-shipping-taxes">Shipping and taxes are calculated during checkout.</div>
     </div>
 </div>
 <div class="cart-summary-footer">
-    <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a>
+    <a href="{% url 'checkout' %}" class="primary-btn">Proceed to Checkout</a>
 </div>
 {% else %}
 <div class="cart-empty-body">

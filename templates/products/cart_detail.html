@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                             {% for item in cart_items %}
-                            <tr data-product-price="{{ item.product.price }}" data-product-slug="{{ item.product.slug }}">
+                            <tr data-product-slug="{{ item.product.slug }}" data-size="{{ item.size }}" data-color="{{ item.color }}">
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic">
                                         <img src="{{ item.product.product_picture.url }}" alt="{{ item.product.name }}">
@@ -34,20 +34,28 @@
                                     <div class="product__cart__item__text">
                                         <h6>{{ item.product.name }}</h6>
                                         <h5>${{ item.product.price }}</h5>
+                                        <p class="text-muted mb-0 d-flex">Color: <span style="background-color: {{ item.color }}; width: 20px; height: 20px; display: inline-block; margin-left: 5px; border-radius: 50%;"></span></p>
+                                        <p class="text-muted mb-0">Size: {{ item.size }}</p>
                                     </div>
                                 </td>
                                 <td class="quantity__item">
                                     <div class="quantity">
-                                        <div class="pro-qty-2">
+                                        <div class="pro-qty-2" id="main-cart">
                                             <button type="button" class="qty-btn qty-btn-minus">-</button>
-                                            <input type="text" value="{{ item.quantity }}" class="quantity-input" data-product-slug="{{ item.product.slug }}">
+                                            <input type="text" 
+                                                value="{{ item.quantity }}" 
+                                                class="quantity-input"
+                                                data-product-slug="{{ item.product.slug }}"
+                                                data-size="{{ item.size }}"
+                                                data-color="{{ item.color }}"
+                                            >
                                             <button type="button" class="qty-btn qty-btn-plus">+</button>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="cart__price total-price-{{ item.product.slug }}" >${{ item.total_price|floatformat:2 }}</td>
+                                <td class="cart__price">${{ item.total_price|floatformat:2 }}</td>
                                 <td class="cart__close">
-                                    <a href="{% url 'remove_from_cart' item.product.slug %}"><i class="fa fa-close"></i></a>
+                                    <a href="{% url 'remove_from_cart' item.product.slug %}" class="remove-item" data-product-slug="{{ item.product.slug }}" data-size="{{ item.size }}" data-color="{{ item.color }}"><i class="fa fa-close"></i></a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -78,8 +86,8 @@
                 <div class="cart__total">
                     <h6>Cart total</h6>
                     <ul>
-                        <li>Subtotal <span class="subtotal">${{ total_price|floatformat:2 }}</span></li>
-                        <li>Total <span class="subtotal">${{ total_price|floatformat:2 }}</span></li>
+                        <li>Subtotal <span class="subtotal" id="cart-subtotal">${{ total_price|floatformat:2 }}</span></li>
+                        <li>Total <span class="subtotal" id="cart-total">${{ total_price|floatformat:2 }}</span></li>
                     </ul>
                     <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a>
                 </div>

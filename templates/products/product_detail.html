@@ -160,36 +160,40 @@
                             </div>
                             <h3>${{product.price}}<span>70.00</span></h3>
                             <p>{{product.description}}.</p>
-                            <div class="product__details__option">
-                                <div class="product__details__option__size">
-                                    <span>Size:</span>
-                                    {% for size in sizes %}
-                                    <label>
-                                        <input type="radio" name="size" value="{{ size }}">
-                                        {{ size }}
-                                    </label>
-                                    {% endfor %}
-                                </div>
-                                <div class="product__details__option__color">
-                                    <span>Color:</span>
-                                    {% for color in colors %}
-                                    <label style="background-color: {{ color }};">
-                                        <input type="radio" name="color" value="{{ color }}">
-                                    </label>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <p class="mb-2">Available stock: {{ stock }}</p>
-                            <div class="product__details__cart__option">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <button type="button" class="qty-btn qty-btn-minus">-</button>
-                                        <input type="text" value="1" id="quantity-input" data-stock="{{ stock }}">
-                                        <button type="button" class="qty-btn qty-btn-plus">+</button>
+                            <form data-product-slug="{{ product.slug }}">
+                                {% csrf_token %}
+                                <div class="product__details__option">
+                                    <div class="product__details__option__size">
+                                        <span>Size:</span>
+                                        {% for size in sizes %}
+                                            <label>
+                                                <input type="radio" name="size" value="{{ size }}" {% if forloop.first %}checked{% endif %}>
+                                                {{ size }}
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="product__details__option__color">
+                                        <span>Color:</span>
+                                        {% for color in colors %}
+                                            <label style="background-color: {{ color }};">
+                                                <input type="radio" name="color" value="{{ color }}" {% if forloop.first %}checked{% endif %}>
+                                            </label>
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                <a href="#" class="add-cart primary-btn" data-url="{% url 'add_to_cart' product.slug %}">+ Add To Cart</a>
-                            </div>
+                                <p class="mb-2">Available stock: {{ stock }}</p>
+                                <div class="product__details__cart__option">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <button type="button" class="qty-btn add-qty-btn-minus">-</button>
+                                            <input type="text" name="quantity" value="1" id="quantity-input" data-stock="{{ stock }}">
+                                            <button type="button" class="qty-btn add-qty-btn-plus">+</button>
+                                        </div>
+                                    </div>
+                                    <!-- Change <a> to <button> -->
+                                    <button type="submit" class="add-to-cart-btn primary-btn">+ Add To Cart</button>
+                                </div>
+                            </form>
                             <div class="product__details__btns__option">
                                 <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
                                 <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a>
