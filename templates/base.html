@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNEGRA NYVES</title>
+    <title>BOBBYSAM E-SHOP</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
@@ -38,21 +38,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
     
     <script>
-        $(".element").each(function() {
-            var $this = $(this);
-            $this.typed({
-                strings: $this.attr('data-elements').split(','),
-                typeSpeed: 100,
-                backDelay: 3000
-            });
-        });
-
         $(document).ready(function() {
+            $(".element").each(function() {
+                var $this = $(this);
+                $this.typed({
+                    strings: $this.attr('data-elements').split(','),
+                    typeSpeed: 100,
+                    backDelay: 3000
+                });
+            });
+
             $('.header_btn a').click(function(event) {
                 event.preventDefault();
-                $('html, body').animate({
-                    scrollTop: $('#products').offset().top
-                }, 800); // 800 is the speed of the scroll in milliseconds
+                var $products = $('#products');
+                if ($products.length) {
+                    $('html, body').animate({
+                        scrollTop: $products.offset().top
+                    }, 400); 
+                }
             });
         });
     </script>

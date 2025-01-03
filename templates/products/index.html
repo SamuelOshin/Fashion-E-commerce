@@ -17,7 +17,7 @@
                             <a href="#"><i class="fa fa-instagram"></i></a>
                         </div>
                         <div class="header_btn">
-                            <a href="{% url 'shop' %}" class="btn btn-outline-custom btn-rounded mt-4">Shop Now</a>
+                            <a href="#" class="btn btn-outline-custom btn-rounded mt-4">Shop Now</a>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                 </ul>
             </div>
         </div>
-        <div class="row product__filter">
+        <div class="row product__filter" id="products">
             {% for product in products %}
             <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                 <div class="product__item" data-url="{% url 'product_detail' product.slug %}">

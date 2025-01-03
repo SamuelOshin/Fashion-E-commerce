@@ -3524,6 +3524,7 @@ ol {
 		-o-transition: all, 0.5s;
 		transition: all, 0.5s;
 		opacity: 0;
+		top: 90px;
 	}
 	.offcanvas-menu-wrapper.active {
 		opacity: 1;
@@ -3543,12 +3544,25 @@ ol {
 	.slicknav_nav ul {
 		margin: 0;
 	}
+
+	.slicknav_nav ul li {
+		border-bottom: 1px solid #e1e1e1;
+		list-style: none;
+		padding: 10px;
+	}
+	.slicknav_nav ul li:hover {
+		background: #e3e3e3;
+	}
 	.slicknav_nav .slicknav_row,
 	.slicknav_nav a {
 		padding: 7px 0;
 		margin: 0;
 		color: #111111;
-		font-weight: 600;
+		text-transform: uppercase;
+		font-size: 13px;
+		font-weight: 700;
+		letter-spacing: 2px;
+		cursor: pointer;
 	}
 	.slicknav_nav .slicknav_arrow {
 		color: #111111;
