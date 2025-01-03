@@ -4,19 +4,18 @@
 
 <section class="home-bg section h-100vh" id="home">
     <div class="bg-overlay"></div>
-        <div class="container z-index">
+        <div class="container z-index d-flex">
             <div class="row justify-content-center">
                 <div class="col-lg-12">
-                    <div class="text-white text-center">
+                    <div class="text-white">
                         <h4>Hello & Welcome! </h4>
                         <h1 class="header_title mb-0 mt-3"><span class="element fw-bold" data-elements="BOBBY'S E-SHOP, CLASSIC E-SHOP"></span></h1>
-                        <ul class="social_home list-unstyled text-center pt-4">
-                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-facebook"></i></a></li>
-                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-linkedin"></i></a></li>
-                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-dribbble"></i></a></li>
-                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-google-plus"></i></a></li>
-                            <li class="list-inline-item"><a href="javascript:void(0)"><i class="mdi mdi-twitter"></i></a></li>
-                        </ul>
+                        <div class="hero__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </div>
                         <div class="header_btn">
                             <a href="{% url 'shop' %}" class="btn btn-outline-custom btn-rounded mt-4">Shop Now</a>
                         </div>
@@ -28,6 +27,46 @@
         <a href="#about" class="scroll">
             <i class="mbri-arrow-down text-white"></i>
         </a>
+    </div>
+</section>
+
+<section class="banner spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 offset-lg-4">
+                <div class="banner__item">
+                    <div class="banner__item__pic">
+                        <img src="{% static 'img/banner/banner-1.jpg' %}" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Clothing Collections 2030</h2>
+                        <a href="#">Shop now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="banner__item banner__item--middle">
+                    <div class="banner__item__pic">
+                        <img src="{% static 'img/banner/banner-2.jpg' %}" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Accessories</h2>
+                        <a href="#">Shop now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="banner__item banner__item--last">
+                    <div class="banner__item__pic">
+                        <img src="{% static 'img/banner/banner-3.jpg' %}" alt="">
+                    </div>
+                    <div class="banner__item__text">
+                        <h2>Shoes Spring 2030</h2>
+                        <a href="#">Shop now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!-- Product -->

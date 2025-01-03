@@ -360,7 +360,7 @@ button:focus {
 }
 
 .home-bg {
-  background-image: url(../img/fashion.jpg);
+  background-image: url(../img/hero/hero-2.jpg);
   background-size: cover;
   position: relative;
   display: flex;
@@ -1190,4 +1190,9 @@ span.product-size {
   border: 1px solid #e1e1e1;
   padding: 5px;
   border-radius: 1px;
+}
+
+.clear-cart-btn{
+  color: #ff0051;
+  text-align: right;
 }

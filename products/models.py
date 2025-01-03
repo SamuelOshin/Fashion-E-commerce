@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save
 from datetime import datetime
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
+from decimal import Decimal
 
 SIZE_CHOICES = [
     ('S', 'Small'),
@@ -110,23 +111,25 @@ class CartItem(models.Model):
         return self.quantity * self.product.price
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     session_key = models.CharField(max_length=40, null=True, blank=True)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     email = models.EmailField()
-    address = models.TextField()
-    city = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
-    zip_code = models.CharField(max_length=10)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=20)
     note = models.TextField(blank=True, null=True)
-    payment_method = models.CharField(max_length=20)
+    payment_method = models.CharField(max_length=50)
     payment_status = models.CharField(max_length=20, default='Pending')
     transaction_reference = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    paystack_reference = models.CharField(max_length=100, blank=True, null=True)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
 
     def __str__(self):
-        return f'Order {self.id}'
+        return f"Order {self.id} by {self.first_name} {self.last_name}"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)

@@ -19,6 +19,7 @@
                         <p class="text-primary m-0 fw-bold">YOUR ORDERS</p>
                     </div>
                     <div class="card-body">
+                        {% if orders %}
                         {% for order in orders %}
                         <div class="d-flex justify-content-between align-items-center mb-3 order_p">
                             <div class="d-flex align-items-center">
@@ -34,6 +35,9 @@
                         </div>
                         <hr>
                         {% endfor %}
+                        {% else %}
+                        <p class="text-center text-muted">You have no orders.</p>
+                        {% endif %}
                     </div>    
                 </div>
                 

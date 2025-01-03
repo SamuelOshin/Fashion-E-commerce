@@ -15,6 +15,7 @@ urlpatterns = [
     path('order-confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
     path('paystack-webhook/', views.paystack_webhook, name='paystack_webhook'),
     path('payment/callback/', views.payment_callback, name='payment_callback'),
+    
     path('orders/', views.order_list, name='order_list'),
     path('order/<int:order_id>/', views.order_detail, name='order_detail'),
     path('cart/clear/', views.clear_cart, name='clear-cart'),

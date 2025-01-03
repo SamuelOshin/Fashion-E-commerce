@@ -19,6 +19,8 @@ from decimal import Decimal
 from django.views.decorators.http import require_POST
 from django.db.models import Sum, F
 from django.utils import timezone
+import requests
+import uuid
 
 logger = logging.getLogger(__name__)
 
@@ -316,7 +318,7 @@ def checkout(request):
                 else:
                     session_key = None  # Not needed for authenticated users
                 
-                # Create Order
+                # Create Order without total_price
                 order = Order.objects.create(
                     user=request.user if request.user.is_authenticated else None,
                     session_key=session_key,
@@ -333,8 +335,9 @@ def checkout(request):
                     created_at=timezone.now()
                 )
                 
-                # Populate OrderItems from Cart
+                # Populate OrderItems from Cart and calculate total_price
                 cart = request.session.get('cart', {})
+                total = Decimal('0.00')
                 for product_id, items in cart.items():
                     product = get_object_or_404(Product, id=product_id)
                     for item in items:
@@ -351,6 +354,11 @@ def checkout(request):
                             quantity=quantity,
                             price=price
                         )
+                        total += price * quantity
+
+                # Update order's total_price
+                order.total_price = total
+                order.save()
                 
                 # Clear the cart after successful order creation
                 request.session['cart'] = {}
@@ -359,6 +367,47 @@ def checkout(request):
                 # Optionally, send confirmation email
                 send_order_confirmation_email(order)
                 
+                if payment_method == 'paystack':
+                    # Initialize Paystack Payment
+                    reference = str(uuid.uuid4())
+                    amount = int(order.total_price * 100)  # Paystack expects amount in kobo
+                    callback_url = request.build_absolute_uri('/products/payment/callback/')
+                    
+                    payload = {
+                        'email': email,
+                        'amount': amount,
+                        'reference': reference,
+                        'callback_url': callback_url,
+                        'metadata': {
+                            'order_id': order.id
+                        }
+                    }
+                    
+                    headers = {
+                        'Authorization': f'Bearer {settings.PAYSTACK_SECRET_KEY}',
+                        'Content-Type': 'application/json',
+                    }
+                    
+                    try:
+                        response = requests.post('https://api.paystack.co/transaction/initialize', json=payload, headers=headers)
+                        response_data = response.json()
+                        
+                        if response_data.get('status'):
+                            authorization_url = response_data['data']['authorization_url']
+                            # Save Paystack reference to order
+                            order.paystack_reference = reference
+                            order.save()
+                            return redirect(authorization_url)
+                        else:
+                            logger.error(f"Paystack Initialization Failed: {response_data.get('message')}")
+                            messages.error(request, 'Payment initialization failed. Please try again.')
+                            return redirect('checkout')
+                    except Exception as e:
+                        logger.exception("Exception during Paystack initialization.")
+                        messages.error(request, 'An unexpected error occurred during payment processing.')
+                        return redirect('checkout')
+                
+                # If not Paystack, proceed to order confirmation
                 messages.success(request, 'Your order has been placed successfully!')
                 return redirect('order_confirmation', order_id=order.id)
                 
@@ -389,7 +438,8 @@ def paystack_webhook(request):
         reference = data.get('reference')
         
         try:
-            order = Order.objects.get(transaction_reference=reference)
+            # Retrieve the order using paystack_reference
+            order = Order.objects.get(paystack_reference=reference)
             order.payment_status = 'Paid'
             order.save()
             
@@ -398,16 +448,20 @@ def paystack_webhook(request):
             send_order_confirmation_email(order)
             
         except Order.DoesNotExist:
+            logger.error(f"Order with paystack_reference {reference} not found.")
             return JsonResponse({'status': 'error', 'message': 'Order not found'})
             
     return JsonResponse({'status': 'success'})
 
+@csrf_exempt
 def payment_callback(request):
     reference = request.GET.get('reference')
     if reference:
         try:
-            order = Order.objects.get(transaction_reference=reference)
-            # Verify payment status
+            # Retrieve the order using paystack_reference
+            order = Order.objects.get(paystack_reference=reference)
+            
+            # Verify payment status with Paystack
             response = paystack.transaction.verify(reference)
             if response['status'] and response['data']['status'] == 'success':
                 order.payment_status = 'Paid'
@@ -498,7 +552,7 @@ def get_cart_sidebar_content(request):
 def order_list(request):
     if request.user.is_authenticated:
         orders = Order.objects.filter(user=request.user).annotate(
-            total_price=Sum(F('items__price') * F('items__quantity'))
+            calculated_total_price=Sum(F('items__price') * F('items__quantity'))
         ).order_by('-created_at')
     else:
         session_key = request.session.session_key
@@ -506,7 +560,7 @@ def order_list(request):
             request.session.create()
             session_key = request.session.session_key
         orders = Order.objects.filter(session_key=session_key).annotate(
-            total_price=Sum(F('items__price') * F('items__quantity'))
+            calculated_total_price=Sum(F('items__price') * F('items__quantity'))
         ).order_by('-created_at')
     
     return render(request, 'products/order_list.html', {'orders': orders})
