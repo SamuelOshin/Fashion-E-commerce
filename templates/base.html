@@ -20,6 +20,7 @@
     {% block content %}
     
     {% endblock %}
+    {% include 'footer.html' %}
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/typed.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
@@ -57,6 +58,10 @@
                     }, 400); 
                 }
             });
+        });
+
+        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-active');
         });
     </script>
 </body>

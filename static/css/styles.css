@@ -374,6 +374,12 @@ button:focus {
   
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  .home-bg {
+    height: 50vh !important;
+  }
+}
+
 .home-table-center {
   display: table-cell;
   vertical-align: middle;
@@ -1195,4 +1201,114 @@ span.product-size {
 .clear-cart-btn{
   color: #ff0051;
   text-align: right;
+}
+
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1001; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 1.3s ease; 
+  border-radius: 0 5px 5px 0;
+  width: 40px;
+}
+
+.sidebar-toggle .arrow {
+  width: 0; 
+  height: 0; 
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid #000;
+  transition: transform 0.3s ease;
+}
+
+/* Initial state of the sidebar (hidden) for mobile and tablet */
+@media (max-width: 991px) {
+  .shop__sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80vw;
+    height: 100vh; 
+    background-color: #fff;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 1.3s ease; 
+    display: block; 
+  }
+}
+
+/* Sidebar visible state */
+.sidebar-active .shop__sidebar {
+  transform: translateX(0);
+}
+
+/* Adjust toggle button position when sidebar is active */
+.sidebar-active .sidebar-toggle {
+  left: 80vw; 
+}
+
+/* Rotate the arrow when sidebar is active */
+.sidebar-active .sidebar-toggle .arrow {
+  transform: rotate(0deg);
+  transition: transform 1.3s ease; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid #000;
+}
+
+
+
+/* Large screens: Always show sidebar and hide toggle button */
+@media (min-width: 992px) {
+  .sidebar-toggle {
+      display: none;
+  }
+  .shop__sidebar {
+      transform: translateX(0);
+      position: static;
+      width: 250px; 
+      box-shadow: none;
+  }
+}
+
+/* Optional: Dim the background when sidebar is active on mobile/tablet */
+.sidebar-active::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 80vw;
+  width: calc(100% - 80vw);
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Ensure the toggle button stays above the dimmed background */
+.sidebar-toggle {
+  z-index: 1001;
+}
+
+/* Sidebar Content Padding */
+.sidebar-active .shop__sidebar__search,
+.sidebar-active .shop__sidebar__accordion {
+  padding: 20px;
+}
+
+/* Optional: Hide the dimmed background on large screens */
+@media (min-width: 992px) {
+  .sidebar-active::before {
+    display: none;
+  }
 }

@@ -493,3 +493,16 @@ function initializeCartQuantityHandlers() {
 
     
 }
+
+
+
+// Close sidebar when clicking outside
+document.addEventListener('click', function(event) {
+    const sidebar = document.querySelector('.shop__sidebar');
+    const toggleButton = document.querySelector('.sidebar-toggle');
+    if (document.body.classList.contains('sidebar-active') &&
+        !sidebar.contains(event.target) &&
+        !toggleButton.contains(event.target)) {
+        document.body.classList.remove('sidebar-active');
+    }
+});
