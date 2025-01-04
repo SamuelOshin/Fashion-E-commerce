@@ -237,7 +237,7 @@ button:focus {
 }
 
 .h-100vh {
-  height: 100vh;
+  height: 100%;
 }
 
 .z-index {
@@ -365,6 +365,7 @@ button:focus {
   position: relative;
   display: flex;
   align-items: center;
+  background-position: center center;
 }
 
 @media (max-width: 768px) {
@@ -374,11 +375,8 @@ button:focus {
   
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
-  .home-bg {
-    height: 50vh !important;
-  }
-}
+
+
 
 .home-table-center {
   display: table-cell;
