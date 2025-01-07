@@ -9,7 +9,6 @@
         </div>
     </div>
 </section>
-
 <section class="checkout spad">
     <div class="container">
         <div class="row">
@@ -19,7 +18,18 @@
                         <div class="notification alert alert-dismissible fade show {% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% endif %}" style="transform: translateY(-20px);">
                             <div class="notification-content">
                                 <div class="notification-title">{{message.tags}}</div>
-                                <div class="notification-description">{{message}}</div>
+                                <div class="notification-description">
+                                    {{message}}
+                                    {% if form.errors %}
+                              <ul>
+                                {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                <li>{{field}}: {{error}}</li>
+                                {% endfor %}
+                                {% endfor %}
+                              </ul>
+                              {% endif %}
+                                </div>
                                 <div class="close-button" data-bs-dismiss="alert">X</div>
                             </div>
                         </div>
@@ -32,66 +42,77 @@
                         <p>First Name<span>*</span></p>
                         {{ form.first_name }}
                         {% for error in form.first_name.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
+                        <div class="invalid-error">{{ error }}</div>
                         {% endfor %}
                     </div>
                     <div class="checkout__input{% if form.last_name.errors %} has-danger{% endif %}">
                         <p>Last Name<span>*</span></p>
                         {{ form.last_name }}
                         {% for error in form.last_name.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
+                        <div class="invalid-error">{{ error }}</div>
                         {% endfor %}
                     </div>
                     <div class="checkout__input{% if form.email.errors %} has-danger{% endif %}">
                         <p>Email<span>*</span></p>
+                        <div class="invalid-error">{{ error }}</div>
                         {{ form.email }}
                         {% for error in form.email.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
+                        
                         {% endfor %}
                     </div>
                     <div class="checkout__input{% if form.address.errors %} has-danger{% endif %}">
                         <p>Address<span>*</span></p>
+                        <div class="invalid-error">{{ error }}</div>
                         {{ form.address }}
                         {% for error in form.address.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
                         {% endfor %}
                     </div>
                     <div class="checkout__input{% if form.city.errors %} has-danger{% endif %}">
                         <p>City<span>*</span></p>
+                        <div class="invalid-error">{{ error }}</div>
                         {{ form.city }}
                         {% for error in form.city.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
                         {% endfor %}
                     </div>
                     <div class="checkout__input{% if form.state.errors %} has-danger{% endif %}">
                         <p>State<span>*</span></p>
                         {{ form.state }}
                         {% for error in form.state.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
+                        <div class="invalid-error">{{ error }}</div>
                         {% endfor %}
                     </div>
                     <div class="checkout__input{% if form.zip_code.errors %} has-danger{% endif %}">
                         <p>Zip Code<span>*</span></p>
                         {{ form.zip_code }}
                         {% for error in form.zip_code.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
+                        <div class="invalid-error">{{ error }}</div>
                         {% endfor %}
                     </div>
                     {% if not user.is_authenticated %}
                     <div class="checkout__input__checkbox">
                         <label for="id_create_account">
                             Create an account?
-                            {{ form.create_account }}
+                            <input type="checkbox" name="create_account" id="id_create_account" {% if form.create_account.value %}checked{% endif %}>
                             <span class="checkmark"></span>
                         </label>
                         <p>Create an account by entering the information below. If you are a returning customer please login at the top of the page</p>
                     </div>
-                    <div class="checkout__input{% if form.password.errors %} has-danger{% endif %}">
-                        <p>Account Password<span>*</span></p>
-                        {{ form.password }}
-                        {% for error in form.password.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
-                        {% endfor %}
+                    <div id="account_fields" style="{% if form.create_account.value %}display:block;{% else %}display:none;{% endif %}">
+                        <div class="checkout__input{% if form.password1.errors %} has-danger{% endif %}">
+                            <p>Password{% if form.create_account.value %}<span>*</span>{% endif %}</p>
+                            {{ form.password1 }}
+                            {% for error in form.password1.errors %}
+                                <div class="invalid-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="checkout__input{% if form.password2.errors %} has-danger{% endif %}">
+                            <p>Confirm Password{% if form.create_account.value %}<span>*</span>{% endif %}</p>
+                            {{ form.password2 }}
+                            {% for error in form.password2.errors %}
+                                <div class="invalid-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
                     </div>
                     {% endif %}
                     <div class="checkout__input__checkbox">
@@ -105,18 +126,28 @@
                         <p>Order Notes</p>
                         {{ form.note }}
                         {% for error in form.note.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
+                        <div class="invalid-error">{{ error }}</div>
                         {% endfor %}
                     </div>
                     <div class="checkout__input{% if form.payment_method.errors %} has-danger{% endif %}">
                         <p>Payment<span>*</span></p>
                         {{ form.payment_method }}
                         {% for error in form.payment_method.errors %}
-                        <div class="invalid-feedback">{{ error }}</div>
+                        <div class="invalid-error">{{ error }}</div>
                         {% endfor %}
                     </div>
                     <button type="submit" class="site-btn">PLACE ORDER</button>
                 </form>
+                <script>
+                    document.getElementById('id_create_account').addEventListener('change', function() {
+                        const accountFields = document.getElementById('account_fields');
+                        if (this.checked) {
+                            accountFields.style.display = 'block';
+                        } else {
+                            accountFields.style.display = 'none';
+                        }
+                    });
+                </script>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="checkout__order">

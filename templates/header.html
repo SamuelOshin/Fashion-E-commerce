@@ -11,7 +11,7 @@
     <div class="offcanvas__option">
         <div class="offcanvas__links">
             {% if user.is_authenticated %}
-            <a class="dropdown">
+            <div class="dropdown">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     {{ user.username }}
                 </a>
@@ -20,7 +20,7 @@
                     <li><a class="dropdown-item" href="{% url 'order_list' %}">Orders</a></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                 </ul>
-            </a>
+            </div>
             {% else %}
                 <a href="{% url 'login' %}">Sign in</a>
             {% endif %}
@@ -60,23 +60,6 @@
                 </div>
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
-                        <div class="header__top__links">
-                            {% if user.is_authenticated %}
-                            <a class="dropdown">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ user.username }}
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'order_list' %}">Orders</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                                </ul>
-                            </a>
-                            {% else %}
-                                <a href="{% url 'login' %}">Sign in</a>
-                            {% endif %}
-                            <a href="#">FAQs</a>
-                        </div>
                         <div class="header__top__hover">
                             <span>Usd <i class="arrow_carrot-down"></i></span>
                             <ul>
@@ -84,6 +67,39 @@
                                 <li>EUR</li>
                                 <li>USD</li>
                             </ul>
+                        </div>
+                        <div class="header__top__links">
+                            <a href="#">FAQs</a>
+                            {% if user.is_authenticated %}
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
+                                    <div class="user-initials" title="{{ user.get_full_name|default:user.email }}">
+                                        {% with user.first_name|default_if_none:"" as first_name %}
+                                            {% with user.last_name|default_if_none:"" as last_name %}
+                                                {% if first_name and last_name %}
+                                                    {{ first_name|slice:":1"|upper }}{{ last_name|slice:":1"|upper }}
+                                                {% elif first_name %}
+                                                    {{ first_name|slice:":1"|upper }}
+                                                {% elif last_name %}
+                                                    {{ last_name|slice:":1"|upper }}
+                                                {% else %}
+                                                    U
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% endwith %}
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li class="dropdown-item">{{ user.username }}</li><hr>
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'order_list' %}">Orders</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                                </ul>
+                            </div>
+                            {% else %}
+                                <a href="{% url 'login' %}">Sign in</a>
+                            {% endif %}
+                            
                         </div>
                     </div>
                 </div>

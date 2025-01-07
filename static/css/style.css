@@ -332,8 +332,8 @@ ol {
 }
 
 .header__top__links {
-	display: inline-block;
-	margin-right: 25px;
+	display: inline-flex;
+	/* margin-right: 25px; */
 }
 
 .header__top__links a {
@@ -341,8 +341,9 @@ ol {
 	font-size: 13px;
 	text-transform: uppercase;
 	letter-spacing: 2px;
-	margin-right: 28px;
-	display: inline-block;
+	margin-right: 10px;
+	display: inline-flex;
+	align-items: center;
 }
 
 .header__top__links a:last-child {
@@ -3513,7 +3514,7 @@ ol {
 	.offcanvas-menu-wrapper {
 		position: fixed;
 		left: -300px;
-		width: 300px;
+		width: 80%;
 		height: 100%;
 		background: #ffffff;
 		padding: 50px 20px 30px 30px;
@@ -3585,7 +3586,7 @@ ol {
 		margin-bottom: 30px;
 	}
 	.offcanvas__links {
-		display: inline-block;
+		/* display: inline-block; */
 		margin-right: 25px;
 	}
 	.offcanvas__links a {

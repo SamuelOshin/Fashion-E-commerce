@@ -21,6 +21,8 @@ from django.db.models import Sum, F
 from django.utils import timezone
 import requests
 import uuid
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 logger = logging.getLogger(__name__)
 
@@ -298,6 +300,39 @@ def checkout(request):
     if request.method == 'POST':
         form = CheckoutForm(request.POST, user=request.user)
         if form.is_valid():
+            create_account = form.cleaned_data.get('create_account')
+
+            if create_account and not request.user.is_authenticated:
+                try:
+                    # Create a new user
+                    user = User.objects.create_user(
+                        username=form.cleaned_data.get('email'),  # Using email as username for uniqueness
+                        email=form.cleaned_data.get('email'),
+                        password=form.cleaned_data.get('password1'),
+                        first_name=form.cleaned_data.get('first_name'),
+                        last_name=form.cleaned_data.get('last_name'),
+                    )
+
+                    # Authenticate the user
+                    user = authenticate(
+                        request,
+                        username=form.cleaned_data.get('email'),
+                        password=form.cleaned_data.get('password1')
+                    )
+
+                    if user is not None:
+                        # Automatically sign in the user
+                        login(request, user)
+                        messages.success(request, 'Account created and signed in successfully.')
+                    else:
+                        messages.error(request, 'Authentication failed. Please try logging in manually.')
+                        return render(request, 'products/checkout.html', {'form': form})
+
+                except Exception as e:
+                    logger.error(f"Error creating user: {str(e)}")
+                    messages.error(request, 'Account creation failed. Please try again.')
+                    return render(request, 'products/checkout.html', {'form': form})
+
             try:
                 # Collect form data
                 first_name = form.cleaned_data.get('first_name')
@@ -414,9 +449,20 @@ def checkout(request):
             except Exception as e:
                 logger.error(f"Checkout error: {str(e)}")
                 messages.error(request, 'There was an error processing your order. Please try again.')
+                return render(request, 'products/checkout.html', {'form': form})
         else:
-            messages.error(request, 'Please correct the errors below.')
+            # Handle GET request
+            initial_data = {}
+            if request.user.is_authenticated:
+                initial_data = {
+                    'first_name': request.user.first_name,
+                    'last_name': request.user.last_name,
+                    'email': request.user.email,
+                }
+            form = CheckoutForm(initial=initial_data, user=request.user)
+            return render(request, 'products/checkout.html', {'form': form})
     else:
+        # Handle GET request
         initial_data = {}
         if request.user.is_authenticated:
             initial_data = {
@@ -425,8 +471,7 @@ def checkout(request):
                 'email': request.user.email,
             }
         form = CheckoutForm(initial=initial_data, user=request.user)
-    
-    return render(request, 'products/checkout.html', {'form': form})
+        return render(request, 'products/checkout.html', {'form': form})
 
 @csrf_exempt
 def paystack_webhook(request):

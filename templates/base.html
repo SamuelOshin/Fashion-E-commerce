@@ -60,9 +60,13 @@
             });
         });
 
-        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
-            document.body.classList.toggle('sidebar-active');
-        });
+        var sidebarToggle = document.querySelector('.sidebar-toggle');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function() {
+                document.body.classList.toggle('sidebar-active');
+            });
+        }
+
     </script>
 </body>
 </html>

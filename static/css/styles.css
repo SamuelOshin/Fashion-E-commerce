@@ -5,12 +5,10 @@ body {
   transition: margin-right .5s;
   background-color: var(--body-bg);
   color: var(--body-color);
-  padding-top: 137px; /* Adjust this value based on your header height */
+  padding-top: 137px; 
 }
 @media (min-width: 768px) and (max-width: 1024px) {
-  body {
-    padding-top: 90px; /* Adjust this value based on your header height */
-  }
+
 
   .header_title {
     font-size: 50px;
@@ -44,10 +42,17 @@ body {
     height: 25px;
   }
 
-  .header__logo a h3{
-    font-size: 19px;
+  .header__logo a h4{
+    font-size: 15px;
   }
 }
+@media (min-width: 300px) and (max-width: 766px) {
+  body {
+    padding-top: 90px; 
+  }
+
+}
+
 
 :root {
   --white: var(--bs-white, var(--white, #fff));
@@ -1172,9 +1177,18 @@ input:focus, select:focus, button:focus, textarea:focus {
 a.dropdown-item {
   color: #575759!important;
 }
-.dropdown-item:hover {
+li.dropdown-item {
+  color: #575759!important;
+  letter-spacing: 2px;
+  text-transform: initial;
+}
+
+a.dropdown-item:hover {
   color: #ffffff!important;
   background-color: #b48865;
+}
+li.dropdown-item:hover {
+  background-color: transparent;
 }
 
 span.product-color {
@@ -1309,4 +1323,54 @@ span.product-size {
   .sidebar-active::before {
     display: none;
   }
+}
+
+.order-confirmation{
+
+  height: 100vh;
+}
+
+.invalid-error{
+  color: red;
+  font-size: .85rem;
+}
+
+.notification.fade-out {
+  opacity: 0;
+}
+
+
+
+.user-initials {
+  width: 35px;
+  height: 35px;
+  background-color: #b99374;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer; 
+  text-decoration: none; 
+}
+
+@media (max-width: 767px) {
+  .user-initials {
+      width: 30px; /* Smaller size for mobile */
+      height: 30px;
+      font-size: 14px;
+  }
+}
+
+/* Optional: Remove padding/margin from dropdown-toggle if needed */
+.dropdown-toggle {
+  padding: 0;
+}
+
+/* Optional: Center the initials within the dropdown */
+.user-initials {
+  margin: 0 auto;
 }

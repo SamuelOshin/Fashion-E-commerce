@@ -8,9 +8,18 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeHeaderScroll();
     initializeColorSelection();
     initializeCartQuantityHandlers();
-    if (typeof data.cart_count !== 'undefined') {
-        updateCartCount(data.cart_count);
-    }
+    
+    // Example for multiple notifications
+    const notifications = document.querySelectorAll('.notification');
+    notifications.forEach(notification => {
+        const timeoutDuration = 5000; // 5 seconds
+        setTimeout(() => {
+            notification.classList.add('fade-out');
+            notification.addEventListener('transitionend', () => {
+                notification.remove();
+            });
+        }, timeoutDuration);
+    });
 });
 
 // Define cartUrl globally
@@ -334,9 +343,13 @@ function showNotification(type, message, cartUrl = '') {
     document.body.appendChild(notification);
 
     // Automatically remove the notification after 3 seconds
+    const timeoutDuration = 5000; // 5 seconds
     setTimeout(() => {
-        notification.remove();
-    }, 3000);
+        notification.classList.add('fade-out');
+        notification.addEventListener('transitionend', () => {
+            notification.remove();
+        });
+    }, timeoutDuration);
 
     // Remove the notification when the close button is clicked
     notification.querySelector('.close-button').addEventListener('click', () => {
