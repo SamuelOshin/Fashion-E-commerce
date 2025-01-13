@@ -1365,12 +1365,16 @@ span.product-size {
   }
 }
 
-/* Optional: Remove padding/margin from dropdown-toggle if needed */
+
 .dropdown-toggle {
   padding: 0;
 }
 
-/* Optional: Center the initials within the dropdown */
 .user-initials {
   margin: 0 auto;
+}
+
+.currency-item.active {
+  font-weight: bold;
+  color: #007bff;
 }

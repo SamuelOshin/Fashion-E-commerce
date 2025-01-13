@@ -18,7 +18,7 @@
                         </div> 
                         
                     </div>
-                    <div class="cart-product-total total-price-{{ item.product.slug }}">${{ item.total_price }}</div>
+                    <div class="cart-product-total product-price total-price-{{ item.product.slug }}" data-base-price="{{ item.total_price }}">USD {{ item.total_price }}</div>
                 </div>
                 <div class="cart-product-quantity">
                     <div class="pro-qty">
@@ -48,7 +48,7 @@
         <div class="cart-subtotal">
             <div class="cart-row">
                 <span>Subtotal</span>
-                <span class="subtotal">${{ total_price }}</span>
+                <span class="subtotal product-price" data-base-price="{{ total_price }}">USD {{ total_price }}</span>
             </div>
         </div>
         <div class="cart-shipping-taxes">

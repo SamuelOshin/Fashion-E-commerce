@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from .forms import CheckoutForm, LoginForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.urls import reverse
@@ -23,10 +23,33 @@ import requests
 import uuid
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from datetime import datetime
+from django.views.decorators.http import require_GET
 
 logger = logging.getLogger(__name__)
 
 paystack = Paystack(secret_key=settings.PAYSTACK_SECRET_KEY)
+
+def fetch_exchange_rates(base_currency='USD'):
+    try:
+        response = requests.get(f'https://open.er-api.com/v6/latest/{base_currency}')
+        data = response.json()
+        if not data or 'rates' not in data:
+            logger.error('Invalid data received from exchange rate API.')
+            return None
+        return data['rates']
+    except Exception as e:
+        logger.error(f'Error fetching exchange rates: {str(e)}')
+        return None
+
+def convert_price(amount, from_currency, to_currency, rates):
+    if from_currency == to_currency:
+        return amount
+    if to_currency not in rates:
+        logger.error(f'Exchange rate for {to_currency} not found.')
+        return None
+    rate = rates[to_currency]
+    return amount * Decimal(rate)
 
 def index(request):
     categories = Category.objects.all()
@@ -173,6 +196,18 @@ def add_to_cart(request, product_slug):
         'message': 'Product added to cart successfully.',
         'cart_count': cart_count
     })
+
+@require_GET
+def cart_count(request):
+    """
+    View to return the current cart count.
+    Assumes the cart is stored in the session under 'cart'.
+    """
+    cart = request.session.get('cart', {})
+    cart_quantity = sum(
+        item['quantity'] for items in cart.values() for item in items if isinstance(item, dict)
+    )
+    return JsonResponse({'success': True, 'cart_quantity': cart_quantity})
 
 @csrf_exempt
 @require_POST
@@ -391,6 +426,14 @@ def checkout(request):
                         )
                         total += price * quantity
 
+                # Fetch exchange rates and convert total price
+                rates = fetch_exchange_rates('USD')
+                selected_currency = request.session.get('selected_currency', 'USD')
+                if rates:
+                    converted_total = convert_price(total, 'USD', selected_currency, rates)
+                    if converted_total is not None:
+                        total = converted_total
+
                 # Update order's total_price
                 order.total_price = total
                 order.save()
@@ -537,9 +580,28 @@ def order_confirmation(request, order_id):
 def send_order_confirmation_email(order):
     subject = 'Order Confirmation'
     
-    message = render_to_string('products/order_confirmation_email.html', {'order': order})
+    # Prepare the context with all necessary variables
+    context = {
+        'order': order,
+        'order_items': order.items.all(),
+        'total_price': order.items.aggregate(total=Sum('price'))['total'],
+        'current_year': datetime.now().year,
+    }
+    
+    # Render the HTML content
+    html_message = render_to_string('products/order_confirmation_email.html', context)
+    
+    # Plain text version (optional but recommended)
+    plain_message = render_to_string('products/order_confirmation_email.txt', context)
+    
     try:
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [order.email])
+        send_mail(
+            subject,
+            plain_message,  # This is the plain text version
+            settings.DEFAULT_FROM_EMAIL,
+            [order.email],
+            html_message=html_message  # This adds the HTML version
+        )
         logger.info(f'Order confirmation email sent to {order.email}')
     except Exception as e:
         logger.error(f'Error sending order confirmation email: {str(e)}')

@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeHeaderScroll();
     initializeColorSelection();
     initializeCartQuantityHandlers();
+    initializeCartCount();
     
     // Example for multiple notifications
     const notifications = document.querySelectorAll('.notification');
@@ -20,19 +21,144 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }, timeoutDuration);
     });
+//FOR CURRENY UPDATE
+    const currencyItems = document.querySelectorAll('.currency-item');
+    let currentCurrency = 'NGN'; // Default currency
+    let exchangeRates = {};
+
+    /**
+     * Fetch exchange rates from Open Exchange Rates API
+     * @param {string} baseCurrency - The base currency code (e.g., 'NGN')
+     */
+    async function fetchExchangeRates(baseCurrency = 'NGN') {
+        try {
+            const response = await fetch(`https://open.er-api.com/v6/latest/${baseCurrency}`);
+            const data = await response.json();
+            if (!data || !data.rates) {
+                console.error('Invalid data received from exchange rate API.');
+                return;
+            }
+            exchangeRates = data.rates;
+            console.log('Exchange rates fetched:', exchangeRates);
+        } catch (error) {
+            console.error('Error fetching exchange rates:', error);
+        }
+    }
+
+    /**
+     * Update all product prices based on the selected currency
+     * @param {string} currency - The selected currency code (e.g., 'EUR')
+     */
+    function updatePrices(currency) {
+        const priceElements = document.querySelectorAll('.product-price');
+        const rate = exchangeRates[currency];
+
+        if (!rate) {
+            console.error(`Exchange rate for ${currency} not found.`);
+            return;
+        }
+
+        priceElements.forEach(el => {
+            const basePriceStr = el.getAttribute('data-base-price');
+            const basePrice = parseFloat(basePriceStr);
+            if (isNaN(basePrice)) {
+                console.error('Invalid base price:', basePriceStr);
+                return;
+            }
+            const convertedPrice = (basePrice * rate).toFixed(2);
+            el.textContent = `${currency} ${convertedPrice}`;
+        });
+        console.log(`Prices updated to ${currency}`);
+    }
+
+    /**
+     * Set the active class on the selected currency item
+     * @param {Element} selectedItem - The clicked currency item element
+     */
+    function setActiveCurrency(selectedItem) {
+        currencyItems.forEach(item => item.classList.remove('active'));
+        selectedItem.classList.add('active');
+    }
+
+    /**
+     * Event listener for currency item clicks
+     */
+    currencyItems.forEach(item => {
+        item.addEventListener('click', async () => {
+            const selectedCurrency = item.getAttribute('data-currency');
+            if (selectedCurrency === currentCurrency) return; // No change needed
+
+            currentCurrency = selectedCurrency;
+            setActiveCurrency(item); // Update active class
+
+            await fetchExchangeRates('NGN'); // Fetch new rates based on NGN
+            updatePrices(currentCurrency); // Update displayed prices
+
+            // Store selected currency in localStorage for persistence
+            localStorage.setItem('selectedCurrency', currentCurrency);
+            console.log(`Currency selected: ${currentCurrency}`);
+        });
+    });
+
+    /**
+     * Initialize currency selection on page load
+     */
+    (async function initializeCurrency() {
+        const storedCurrency = localStorage.getItem('selectedCurrency');
+        currentCurrency = storedCurrency ? storedCurrency : 'NGN';
+
+        const activeItem = Array.from(currencyItems).find(
+            item => item.getAttribute('data-currency') === currentCurrency
+        );
+        if (activeItem) setActiveCurrency(activeItem);
+
+        await fetchExchangeRates('NGN'); // Fetch rates based on initialized currency
+        updatePrices(currentCurrency); // Update displayed prices
+    })();
+
+    // Additional event listener to handle active class and update selected currency display
+    currencyItems.forEach(item => {
+        item.addEventListener('click', function () {
+            currencyItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            const selectedCurrencyElement = document.querySelector('#selected-currency');
+            if (selectedCurrencyElement) {
+                selectedCurrencyElement.innerHTML = this.getAttribute('data-currency') + ' <i class="arrow_carrot-down"></i>';
+            }
+        });
+    });
 });
 
 // Define cartUrl globally
 const cartIcon = document.querySelector('.cart-icon');
 const cartUrl = cartIcon ? cartIcon.getAttribute('data-cart-url') : '';
 
-console.log('Cart URL:', cartUrl); // For debugging purposes
 
 // -------------------- Initialization Functions --------------------
 
 // Placeholder for additional UI components
 function initializeUIComponents() {
     // Initialize other UI components if needed
+}
+
+function initializeCartCount() {
+    fetch('/products/cart-count/', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateCartCount(data.cart_quantity);
+        } else {
+            console.error('Failed to fetch cart count.');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching cart count:', error);
+    });
 }
 
 // -------------------- Cart Event Listeners --------------------

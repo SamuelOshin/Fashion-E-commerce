@@ -1,0 +1,54 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <!-- Products Card -->
+    <a href="{% url 'admin:products_product_changelist' %}" class="bg-indigo-500 text-white p-6 rounded-lg shadow hover:bg-indigo-600">
+        <h3 class="text-lg font-semibold">Total Products</h3>
+        <p class="text-2xl">{{ products_count }}</p>
+    </a>
+    
+    <!-- Orders Card -->
+    <a href="{% url 'admin:products_order_changelist' %}" class="bg-green-500 text-white p-6 rounded-lg shadow hover:bg-green-600">
+        <h3 class="text-lg font-semibold">Total Orders</h3>
+        <p class="text-2xl">{{ orders_count }}</p>
+    </a>
+    
+    <!-- Users Card -->
+    <a href="{% url 'admin:auth_user_changelist' %}" class="bg-yellow-500 text-white p-6 rounded-lg shadow hover:bg-yellow-600">
+        <h3 class="text-lg font-semibold">Total Users</h3>
+        <p class="text-2xl">{{ users_count }}</p>
+    </a>
+</div>
+
+<!-- Recent Orders Section -->
+<div class="bg-white shadow rounded-lg p-6">
+    <h3 class="text-lg font-semibold text-gray-700 mb-4">Recent Orders</h3>
+    <table class="table-auto w-full border-collapse border border-gray-200">
+        <thead class="bg-gray-50 text-gray-700">
+            <tr>
+                <th class="border border-gray-300 px-4 py-2 text-left">Order ID</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Customer</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in recent_orders %}
+                <tr class="hover:bg-gray-100">
+                    <td class="border border-gray-300 px-4 py-2">{{ order.id }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ order.first_name }} {{ order.last_name }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ order.email }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ order.payment_status }}</td>
+                    <td class="border border-gray-300 px-4 py-2">{{ order.created_at|date:"M d, Y" }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="border border-gray-300 px-4 py-2 text-center">No recent orders.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

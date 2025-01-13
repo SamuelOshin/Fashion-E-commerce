@@ -158,7 +158,7 @@
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>${{product.price}}<span>70.00</span></h3>
+                            <h3 class="product-price" data-base-price="{{ product.price }}">USD {{ product.price }}</h3>
                             <p>{{product.description}}.</p>
                             <form data-product-slug="{{ product.slug }}">
                                 {% csrf_token %}

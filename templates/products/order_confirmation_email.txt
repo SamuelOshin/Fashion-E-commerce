@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Confirmation</title>
+</head>
+<body>
+    <p>Hi {{ order.first_name }},</p>
+    <p>Thank you for your order. Your order number is {{ order.id }}.</p>
+    <p>We have received your order and will process it shortly. Here are the details of your order:</p>
+    <ul>
+        {% for item in order_items %}
+            <li>{{ forloop.counter }}. {{ item.product.name }} - ${{ item.price|floatformat:2 }}</li>
+        {% endfor %}
+    </ul>
+    <p>Subtotal: ${{ total_price|floatformat:2 }}</p>
+    <p>Total: ${{ total_price|floatformat:2 }}</p>
+    <p>Thank you for shopping with us!</p>
+    <p>&copy; {{ current_year }} Your Company. All rights reserved.</p>
+</body>
+</html>

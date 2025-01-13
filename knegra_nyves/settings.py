@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 import environ
 import dj_database_url
+from django.templatetags.static import static
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +41,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'products',
     'users',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -153,3 +158,67 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 PAYSTACK_SECRET_KEY = env('PAYSTACK_SECRET_KEY')
+
+# Add Unfold dashboard theme configuration
+UNFOLD = {
+    "SITE_TITLE": "BOBBYSAM ADMIN Dashboard",
+    "SITE_HEADER": "BOBBYSAM Administration",
+    "SITE_URL": "/admin/",
+    "SIDEBAR": {
+        "show_search": True,
+        "navigation": [
+            {
+                "title": "Navigation",
+                "separator": True,
+                "items": [
+                    {
+                        "title": _("Dashboard"),
+                        "icon": "dashboard",
+                        "link": reverse_lazy("admin:index"),
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                    {
+                        "title": _("Products"),
+                        "icon": "inventory",
+                        "link": reverse_lazy("admin:products_product_changelist"),
+                    },
+                    {
+                        "title": _("Orders"),
+                        "icon": "shopping_cart",
+                        "link": reverse_lazy("admin:products_order_changelist"),
+                    },
+                    
+                ],
+            },
+            {
+                "title": _("Users & Groups"),
+                "collapsible": True,  
+                "icon": "people",
+                "items": [
+                    {
+                        "title": _("Users"),
+                        "icon": "person",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
+                    },
+                    {
+                        "title": _("Groups"),
+                        "icon": "label",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
+                    },
+                ],
+            },
+            # Add a separator and Logout at the bottom
+            {
+                "separator": True,
+                "items": [
+                    {
+                        "title": _("Logout"),
+                        "icon": "logout",
+                        "link": reverse_lazy("admin:logout"),
+                    },
+                ],
+            },
+        ],
+    },
+}
+

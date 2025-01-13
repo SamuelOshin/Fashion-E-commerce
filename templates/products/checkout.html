@@ -155,12 +155,12 @@
                     <div class="checkout__order__products">Product <span>Total</span></div>
                     <ul class="checkout__total__products">
                         {% for item in cart_items %}
-                        <li>{{ forloop.counter }}. {{ item.product.name }} <span>${{ item.total_price|floatformat:2 }}</span></li>
+                        <li>{{ forloop.counter }}. {{ item.product.name }} <span class="product-price" data-base-price="{{ item.total_price }}">USD {{ item.total_price|floatformat:2 }}</span></li>
                         {% endfor %}
                     </ul>
                     <ul class="checkout__total__all">
-                        <li>Subtotal <span>${{ total_price|floatformat:2 }}</span></li>
-                        <li>Total <span>${{ total_price|floatformat:2 }}</span></li>
+                        <li>Subtotal <span class="product-price" data-base-price="{{ total_price }}">USD {{ total_price|floatformat:2 }}</span></li>
+                        <li>Total <span class="product-price" data-base-price="{{ total_price }}">USD {{ total_price|floatformat:2 }}</span></li>
                     </ul>
                 </div>
             </div>

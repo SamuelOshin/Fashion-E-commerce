@@ -1,0 +1,257 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs py-2 px-4 mb-4">
+    <a href="{% url 'admin:index' %}" class="flex items-center">
+        <i class="fas fa-home mr-2"></i> Home / Dashboard
+    </a>
+</div>
+{% endblock %}
+{% block content %}
+<div class="px-6 py-4">
+    <!-- Dashboard Cards -->
+    <div class="flex flex-col gap-8 lg:flex-row">
+        <!-- Products Card -->
+        <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800 lg:w-1/3">
+            <a href="{% url 'admin:products_product_changelist' %}" class="flex flex-col items-center">
+                <div class="text-blue-500 text-4xl mb-4">
+                    <i class="fas fa-box"></i>
+                </div>
+                <h2 class="text-lg font-semibold mt-1">Products</h2>
+                <p class="text-gray-500 text-sm">Manage all products in the store</p>
+            </a>
+        </div>
+
+        <!-- Orders Card -->
+        <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800 lg:w-1/3">
+            <a href="{% url 'admin:products_order_changelist' %}" class="flex flex-col items-center">
+                <div class="text-green-500 text-4xl mb-4">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h2 class="text-lg font-semibold mt-1">Orders</h2>
+                <p class="text-gray-500 text-sm">View and manage all orders</p>
+            </a>
+        </div>
+
+        <!-- Users Card -->
+        <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800 lg:w-1/3">
+            <a href="{% url 'admin:auth_user_changelist' %}" class="flex flex-col items-center">
+                <div class="text-purple-500 text-4xl mb-4">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h2 class="text-lg font-semibold mt-1">Users</h2>
+                <p class="text-gray-500 text-sm">Manage users and groups</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="px-6 py-4">
+    
+    <!-- Dashboard Cards -->
+    <div class="dashboard-container">
+        <div class="flex flex-col gap-8 lg:flex-row">
+            <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800  lg:w-1/3">
+                <a href="{% url 'admin:auth_user_changelist' %}">
+                    <i class="fas fa-users text-purple-500 text-4xl"></i>
+                    <h2 class="text-lg font-semibold mt-4">Active Users</h2>
+                    <p class="text-2xl font-bold">{{ total_users }}</p>
+                    <p class="text-gray-500 text-sm">Manage users and groups</p>
+                </a>
+            </div>
+            <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800  lg:w-1/3">
+                <a href="{% url 'admin:products_product_changelist' %}">
+                    <i class="fas fa-box text-blue-500 text-4xl"></i>
+                    <h2 class="text-lg font-semibold mt-4">Products</h2>
+                    <p class="text-2xl font-bold">{{ total_products }}</p>
+                    <p class="text-gray-500 text-sm">Manage all products in the store</p>
+                </a>
+            </div>
+            <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800  lg:w-1/3">
+                <a href="{% url 'admin:products_order_changelist' %}">
+                    <i class="fas fa-shopping-cart text-green-500 text-4xl"></i>
+                    <h2 class="text-lg font-semibold mt-4">Total Orders</h2>
+                    <p class="text-2xl font-bold">{{ total_orders }}</p>
+                    <p class="text-gray-500 text-sm">View and manage all orders</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="px-6 py-4"></div>
+        <h2 class="text-lg font-semibold mb-4">Order Details</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white dark:bg-gray-800">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b dark:border-gray-700">Order ID</th>
+                        <th class="py-2 px-4 border-b dark:border-gray-700">Customer</th>
+                        <th class="py-2 px-4 border-b dark:border-gray-700">Email</th>
+                        <th class="py-2 px-4 border-b dark:border-gray-700">Date</th>
+                        <th class="py-2 px-4 border-b dark:border-gray-700">Total</th>
+                        <th class="py-2 px-4 border-b dark:border-gray-700">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td class="py-2 px-4 border-b dark:border-gray-700">{{ order.id }}</td>
+                        <td class="py-2 px-4 border-b dark:border-gray-700">{{ order.first_name }} {{ order.last_name }}</td>
+                        <td class="py-2 px-4 border-b dark:border-gray-700">{{ order.email }}</td>
+                        <td class="py-2 px-4 border-b dark:border-gray-700">{{ order.created_at }}</td>
+                        <td class="py-2 px-4 border-b dark:border-gray-700">{{ order.total_price }}</td>
+                        <td class="py-2 px-4 border-b dark:border-gray-700">{{ order.payment_status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
+
+{% endblock %}
+
+</div>
+
+
+
+
+
+<div class="flex flex-col gap-8 lg:flex-row">
+                                
+    <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800  lg:w-1/3">
+
+
+<div class="flex-grow relative ">
+
+        <p class="leading-relaxed mb-0 text-sm">
+
+            Product A Performance
+        
+</p>
+
+
+        <div class="font-semibold text-2xl text-font-important-light tracking-tight dark:text-font-important-dark">
+
+            $7,208.37
+        
+</div>
+                  
+    
+
+
+<div class="absolute right-0 top-0">
+<span class="inline-block font-semibold leading-normal px-2 py-1 rounded text-xxs uppercase whitespace-nowrap
+
+ bg-primary-100 text-primary-700 dark:bg-primary-500/20 dark:text-primary-400
+">
+Last 7 days
+</span>
+
+</div>
+
+
+
+</div>
+
+
+<div class="border-t flex items-center -mb-6 -mx-6 mt-6 pb-2 pt-2 px-6 text-sm dark:border-gray-800">
+<strong class="text-green-700 font-semibold dark:text-green-400">+5.61%</strong>&nbsp;progress from last week
+</div>
+
+</div>
+
+                
+    <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800  lg:w-1/3">
+
+
+<div class="flex-grow relative ">
+
+        <p class="leading-relaxed mb-0 text-sm">
+
+            Product B Performance
+        
+</p>
+
+
+        <div class="font-semibold text-2xl text-font-important-light tracking-tight dark:text-font-important-dark">
+
+            $4,668.67
+        
+</div>
+                  
+    
+
+
+<div class="absolute right-0 top-0">
+<span class="inline-block font-semibold leading-normal px-2 py-1 rounded text-xxs uppercase whitespace-nowrap
+
+ bg-primary-100 text-primary-700 dark:bg-primary-500/20 dark:text-primary-400
+">
+Last 7 days
+</span>
+
+</div>
+
+
+
+</div>
+
+
+<div class="border-t flex items-center -mb-6 -mx-6 mt-6 pb-2 pt-2 px-6 text-sm dark:border-gray-800">
+<strong class="text-green-700 font-semibold dark:text-green-400">+3.06%</strong>&nbsp;progress from last week
+</div>
+
+</div>
+
+                
+    <div class="border flex flex-col flex-grow overflow-hidden p-6 relative rounded-md shadow-sm dark:border-gray-800  lg:w-1/3">
+
+
+<div class="flex-grow relative ">
+
+        <p class="leading-relaxed mb-0 text-sm">
+
+            Product C Performance
+        
+</p>
+
+
+        <div class="font-semibold text-2xl text-font-important-light tracking-tight dark:text-font-important-dark">
+
+            $5,566.98
+        
+</div>
+                  
+    
+
+
+<div class="absolute right-0 top-0">
+<span class="inline-block font-semibold leading-normal px-2 py-1 rounded text-xxs uppercase whitespace-nowrap
+
+ bg-primary-100 text-primary-700 dark:bg-primary-500/20 dark:text-primary-400
+">
+Last 7 days
+</span>
+
+</div>
+
+
+
+</div>
+
+
+<div class="border-t flex items-center -mb-6 -mx-6 mt-6 pb-2 pt-2 px-6 text-sm dark:border-gray-800">
+<strong class="text-green-700 font-semibold dark:text-green-400">+6.98%</strong>&nbsp;progress from last week
+</div>
+
+</div>
+
+
+</div>
+
+
