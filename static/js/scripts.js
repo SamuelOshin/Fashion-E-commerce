@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }, timeoutDuration);
     });
 //FOR CURRENY UPDATE
+
+    // FOR CURRENCY UPDATE
     const currencyItems = document.querySelectorAll('.currency-item');
     let currentCurrency = 'NGN'; // Default currency
     let exchangeRates = {};
@@ -97,6 +99,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Store selected currency in localStorage for persistence
             localStorage.setItem('selectedCurrency', currentCurrency);
             console.log(`Currency selected: ${currentCurrency}`);
+
+            // Update the selected currency display
+            const selectedCurrencyElements = document.querySelectorAll('.selected-currency');
+            selectedCurrencyElements.forEach(element => {
+                element.innerHTML = `${currentCurrency} <i class="arrow_carrot-down"></i>`;
+            });
         });
     });
 
@@ -114,19 +122,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         await fetchExchangeRates('NGN'); // Fetch rates based on initialized currency
         updatePrices(currentCurrency); // Update displayed prices
-    })();
 
-    // Additional event listener to handle active class and update selected currency display
-    currencyItems.forEach(item => {
-        item.addEventListener('click', function () {
-            currencyItems.forEach(i => i.classList.remove('active'));
-            this.classList.add('active');
-            const selectedCurrencyElement = document.querySelector('#selected-currency');
-            if (selectedCurrencyElement) {
-                selectedCurrencyElement.innerHTML = this.getAttribute('data-currency') + ' <i class="arrow_carrot-down"></i>';
-            }
+        // Update the selected currency display on page load
+        const selectedCurrencyElements = document.querySelectorAll('.selected-currency');
+        selectedCurrencyElements.forEach(element => {
+            element.innerHTML = `${currentCurrency} <i class="arrow_carrot-down"></i>`;
         });
-    });
+    })();
 });
 
 // Define cartUrl globally
