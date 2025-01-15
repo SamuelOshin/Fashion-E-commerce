@@ -214,7 +214,7 @@
                     {% for product in products %}
                     <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6">
                         <div class="product__item" data-url="{% url 'product_detail' product.slug %}">
-                            <div class="product__item__pic set-bg" data-setbg="{{ product.product_picture.url }}">
+                            <div class="product__item__pic set-bg" data-setbg="{{ product.photo.cdn_url|default:'/static/img/product/product-1.jpg' }}">
                                 <span class="label">New</span>
                                 <ul class="product__hover">
                                     <li><a href="#"><img class="icon_2em" src="{% static 'img/icon/heart.png' %}" alt=""></a></li>

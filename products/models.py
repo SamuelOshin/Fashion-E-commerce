@@ -5,6 +5,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 from decimal import Decimal
+from pyuploadcare.dj.models import ImageField
 
 SIZE_CHOICES = [
     ('S', 'Small'),
@@ -113,9 +114,23 @@ class Product(models.Model):
     promo_badge_text = models.CharField(max_length=50, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    product_picture = models.ImageField(upload_to='product/%Y/%m%d')
+    product_picture = models.ImageField(upload_to='product/%Y/%m%d', blank=True)
+    photo = ImageField(blank=True, manual_crop="")
     slug = models.SlugField(max_length=255, unique=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        # Generate slug if not provided
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        # Check if the photo field has changed
+        if self.pk:
+            original = Product.objects.get(pk=self.pk)
+            if original.photo != self.photo and not self.photo:
+                self.photo = original.photo
+
+        super(Product, self).save(*args, **kwargs)
+        
     def __str__(self):
         return self.name
 

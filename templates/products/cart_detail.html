@@ -29,7 +29,7 @@
                             <tr data-product-slug="{{ item.product.slug }}" data-size="{{ item.size }}" data-color="{{ item.color }}">
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic">
-                                        <img src="{{ item.product.product_picture.url }}" alt="{{ item.product.name }}">
+                                        <img src="{{ item.product.photo.cdn_url|default:'/static/img/product/product-1.jpg' }}" alt="{{ item.product.name }}">
                                     </div>
                                     <div class="product__cart__item__text">
                                         <h6>{{ item.product.name }}</h6>

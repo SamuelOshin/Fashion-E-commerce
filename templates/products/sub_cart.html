@@ -8,7 +8,7 @@
     {% for item in cart_items %}
     <div class="cart-product">
         <div class="cart-product-col">
-            <img src="{{ item.product.product_picture.url }}" alt="{{ item.product.name }}" width="50">
+            <img src="{{ item.product.photo.cdn_url|default:'/static/img/product/product-1.jpg' }}" alt="{{ item.product.name }}" width="50">
             <div class="cart-product-control">
                 <div class="cart-row">
                     <div class="cart-product-name">{{ item.product.name }}
@@ -18,7 +18,7 @@
                         </div> 
                         
                     </div>
-                    <div class="cart-product-total product-price total-price-{{ item.product.slug }}" data-base-price="{{ item.total_price }}">USD {{ item.total_price }}</div>
+                    <div class="cart-product-total product-price total-price-{{ item.product.slug }}" data-base-price="{{ item.total_price }}"> {{ item.total_price }}</div>
                 </div>
                 <div class="cart-product-quantity">
                     <div class="pro-qty">
@@ -48,7 +48,7 @@
         <div class="cart-subtotal">
             <div class="cart-row">
                 <span>Subtotal</span>
-                <span class="subtotal product-price" data-base-price="{{ total_price }}">USD {{ total_price }}</span>
+                <span class="subtotal product-price" data-base-price="{{ total_price }}"> {{ total_price }}</span>
             </div>
         </div>
         <div class="cart-shipping-taxes">

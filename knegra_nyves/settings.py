@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pyuploadcare.dj',
     'products',
     'users',
     'django.contrib.humanize',
@@ -222,3 +223,7 @@ UNFOLD = {
     },
 }
 
+UPLOADCARE = {
+    "pub_key": "b7257509ed2e949b99b6",
+    "secret": "a3a90f789ea6855d25d7",
+}

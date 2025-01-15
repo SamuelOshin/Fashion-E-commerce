@@ -32,7 +32,7 @@
                 {% for item in order_items %}
                 <div class="d-flex justify-content-between align-items-center mb-3 order_p">
                     <div class="d-flex align-items-center">
-                        <img src="{{ item.product.product_picture.url }}" alt="{{ item.product.name }}" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 15px;">
+                        <img src="{{ item.product.photo.cdn_url|default:'/static/img/product/product-1.jpg' }}" alt="{{ item.product.name }}" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 15px;">
                         <div>
                             <p class="mb-1 fw-bold">{{ item.product.name }}</p>
                             <p class="text-muted mb-0 d-flex">Color: <span style="background-color: {{ item.color }}; width: 20px; height: 20px; display: inline-block; margin-left: 5px; border-radius: 50%;"></span></p>
@@ -41,8 +41,8 @@
                         </div>
                     </div>
                     <div class="order_p">
-                        <p class="mb-0 fw-bold text-end">${{ item.price|floatformat:2 }}</p>
-                        <p class="text-muted mb-0 fs-7">Total: ${{ item.total_price|floatformat:2 }}</p>
+                        <p class="mb-0 fw-bold text-end product-price" data-base-price="{{ item.price|floatformat:2 }}">NGN {{ item.price|floatformat:2 }}</p>
+                        <p class="text-muted mb-0 fs-7 product-price" data-base-price="{{ item.total_price }}">Total: NGN {{ item.total_price|floatformat:2 }}</p>
                     </div>
                 </div>
                 <hr>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-md-6 text-end">
                     <h6>Total</h6>
-                    <p class="text-muted mb-0"><strong>${{ total_price|floatformat:2 }}</strong></p>
+                    <p class="fw-bold mb-0 product-price" data-base-price="{{ total_price|floatformat:2 }}"><strong> {{ total_price|floatformat:2 }}</strong></p>
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-4">

@@ -1378,3 +1378,48 @@ span.product-size {
   font-weight: bold;
   color: #007bff;
 }
+
+.whatsapp-chat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.whatsapp-button {
+  display: flex;
+  align-items: center;
+  background-color: #2aad48;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 16px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  animation: fadeInOut 2s infinite; 
+  transition: box-shadow 0.3s ease;
+}
+
+.whatsapp-button img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.whatsapp-button:hover {
+  background-color: #1eb254;
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Fade-in/out animation */
+@keyframes fadeInOut {
+  0% {
+      opacity: 0.7;
+  }
+  50% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0.7;
+  }
+}

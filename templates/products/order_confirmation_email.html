@@ -81,19 +81,42 @@
         <div class="checkout__order">
             <h4 class="order__title">Your order</h4>
             <div class="checkout__order__products">Product <span>Total</span></div>
-            <ul class="checkout__total__products">
-                {% for item in order.items.all %}
-                <li>{{ forloop.counter }}. {{ item.product.name }} <span>${{ item.price|floatformat:2 }}</span></li>
-                {% endfor %}
-            </ul>
-            <ul class="checkout__total__all">
-                <li>Subtotal <span>${{ total_price|floatformat:2 }}</span></li>
-                <li>Total <span>${{ total_price|floatformat:2 }}</span></li>
-            </ul>
+            <table class="checkout__total__products" width="100%" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th align="left">#</th>
+                        <th align="left">Product</th>
+                        <th align="left">Qty</th>
+                        <th align="right">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td align="right">NGN {{ item.price|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="checkout__total__all" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+                <tbody>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td align="right">NGN {{ total_price|floatformat:2 }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td align="right">NGN {{ total_price|floatformat:2 }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <p>Thank you for shopping with us!</p>
         <div class="footer">
-            <p>&copy; {{ current_year }} Your Company. All rights reserved.</p>
+            <p>&copy; {{ current_year }} Bobbysam E-shop. All rights reserved.</p>
         </div>
     </div>
 </body>
