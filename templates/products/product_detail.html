@@ -191,7 +191,10 @@
                                         </div>
                                     </div>
                                     <!-- Change <a> to <button> -->
-                                    <button type="submit" class="add-to-cart-btn primary-btn">+ Add To Cart</button>
+                                    <button type="submit" class="add-to-cart-btn primary-btn">
+                                        <span class="button-text">+ Add To Cart</span>
+                                        <img src="{% static 'img/loading.png' %}" class="loading-gif" style="width: 20px;height: 20px;display: none;" alt="Loading...">
+                                    </button>
                                 </div>
                             </form>
                             <div class="product__details__btns__option">

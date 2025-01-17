@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="product__cart__item__text">
                                         <h6>{{ item.product.name }}</h6>
-                                        <h5>${{ item.product.price }}</h5>
+                                        <h5 class="cart-product-total product-price total-price-{{ item.product.slug }}" data-base-price="{{ item.product.price }}"> {{ item.product.price }}</h5>
                                         <p class="text-muted mb-0 d-flex">Color: <span style="background-color: {{ item.color }}; width: 20px; height: 20px; display: inline-block; margin-left: 5px; border-radius: 50%;"></span></p>
                                         <p class="text-muted mb-0">Size: {{ item.size }}</p>
                                     </div>
@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="cart__price">${{ item.total_price|floatformat:2 }}</td>
+                                <td class="cart__price product-price" data-base-price="{{ item.total_price|floatformat:2 }}">NGN {{ item.total_price|floatformat:2 }}</td>
                                 <td class="cart__close">
                                     <a href="{% url 'remove_from_cart' item.product.slug %}" class="remove-item" data-product-slug="{{ item.product.slug }}" data-size="{{ item.size }}" data-color="{{ item.color }}"><i class="fa fa-close"></i></a>
                                 </td>
@@ -86,8 +86,8 @@
                 <div class="cart__total">
                     <h6>Cart total</h6>
                     <ul>
-                        <li>Subtotal <span class="subtotal" id="cart-subtotal">${{ total_price|floatformat:2 }}</span></li>
-                        <li>Total <span class="subtotal" id="cart-total">${{ total_price|floatformat:2 }}</span></li>
+                        <li>Subtotal <span class="product-price" data-base-price="{{ total_price }}">NGN {{ total_price|floatformat:2 }}</span></li>
+                        <li>Total <span class="product-price" data-base-price="{{ total_price }}">NGN {{ total_price|floatformat:2 }}</span></li>
                     </ul>
                     <a href="{% url 'checkout' %}" class="primary-btn">Proceed to checkout</a>
                 </div>
