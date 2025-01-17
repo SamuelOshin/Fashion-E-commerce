@@ -129,6 +129,37 @@ document.addEventListener('DOMContentLoaded', function() {
             element.innerHTML = `${currentCurrency} <i class="arrow_carrot-down"></i>`;
         });
     })();
+
+    // Add event listener to the add-to-cart button
+    const addToCartButton = document.querySelector('.add-to-cart-btn');
+    if (addToCartButton) {
+        addToCartButton.addEventListener('click', function(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Show the loading GIF and disable the button
+            const loadingGif = this.querySelector('.loading-gif');
+            const buttonText = this.querySelector('.button-text');
+            if (loadingGif && buttonText) {
+                loadingGif.style.display = 'inline-block';
+                
+                this.disabled = true;
+            }
+
+            // Simulate the add-to-cart process (replace with actual AJAX call or form submission)
+            setTimeout(() => {
+                // Hide the loading GIF and re-enable the button
+                if (loadingGif && buttonText) {
+                    loadingGif.style.display = 'none';
+                    buttonText.style.display = 'inline-block';
+                    this.disabled = false;
+                }
+
+                // Optionally, submit the form or handle the add-to-cart logic here
+                // this.closest('form').submit();
+            }, 2000); // Simulate a 2-second delay for the add-to-cart process
+        });
+    }
 });
 
 // Define cartUrl globally

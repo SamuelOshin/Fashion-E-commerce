@@ -1423,3 +1423,8 @@ span.product-size {
       opacity: 0.7;
   }
 }
+
+.add-to-cart-btn {
+  width: 300px;
+  max-width: 300px;
+}
